@@ -1,0 +1,19 @@
+{
+ "board":"STM32F0_NUCLEO_L073RZ",
+ "gpio_driver_version":"v2",
+ "output_pins":[
+	 {"id":"led_pin0","pin":"pa7","pullup":"none"},
+	 {"id":"led_pin1","pin":"pa8","pullup":"none"},
+	 {"id":"relay_pin","pin":"pb8","pullup":"none"}
+        ],
+
+ "leds":[
+	 {"id":"led0","output_pin":"led_pin0"},
+	 {"id":"led1","output_pin":"led_pin1"}
+        ],
+ "general_output_pins":[
+	 {"id":"relay_output","output_pins":"relay_pin"}
+	]
+
+}
+
