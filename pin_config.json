@@ -1,0 +1,27 @@
+{
+ "board":"STM32F0_NUCLEO_L073RZ",
+ "gpio_driver_version":"v2",
+ "output_pins":[
+	 {"id":"led_pin0","pin":"pa7","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","initialState":false},
+	 {"id":"led_pin1","pin":"pa8","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","initialState":false},
+	 {"id":"relay_pin","pin":"pb8","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","initialState":false},
+	 {"id":"spi1_cs","pin":"pb9","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","initialState":false}
+        ],
+ "alternative_pins":[
+	{"id":"spi1_clk","pin":"pb7","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
+	{"id":"spi1_miso","pin":"pb8","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
+	{"id":"spi1_mosi","pin":"pb9","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"}
+       ],
+ "leds":[
+	 {"id":"led0","output_pins":"led_pin0"},
+	 {"id":"led1","output_pins":"led_pin1"}
+        ],
+ "general_output_pins":[
+	 {"id":"relay_output","output_pins":"relay_pin"}
+	],
+ "spis_pins":
+	[
+	 {"id":"spi1_pins","clk":"spi1_clk","miso":"spi1_miso","mosi":"spi1_mosi","cs":"spi1_cs"}
+	]
+}
+

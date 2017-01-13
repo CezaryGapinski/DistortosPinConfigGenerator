@@ -50,18 +50,19 @@ constexpr size_t led0 { 0 };
 constexpr size_t led1 { 1 };
 
 
+#ifdef CONFIG_BOARD_LEDS_ENABLE
+
 /*---------------------------------------------------------------------------------------------------------------------+
-| indexed access to pin identifiers
+| indexed access to LED objects
 +---------------------------------------------------------------------------------------------------------------------*/
 
-/// array with pin identifiers of all LEDs
-constexpr std::array<chip::Pin, totalLeds> ledPins
-{
-	
-	chip::Pin::pa7,
-	chip::Pin::pa8,
-};
+/// array with all LED objects
+extern chip::ChipOutputPin leds[totalLeds];
 
-}
+#endif	// def CONFIG_BOARD_LEDS_ENABLE
 
-#endif	// SOURCE_BOARD_STM32_STM32F0_NUCLEO_L073RZ_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+}	// namespace board
+
+}	// namespace distortos
+
+#endif	// SOURCE_BOARD_STM32_STM32F0_NUCLEO_L073RZ_CUSTOM_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
