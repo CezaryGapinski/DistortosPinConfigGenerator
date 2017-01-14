@@ -1,0 +1,43 @@
+/**
+ * \file
+ * \brief Declaration of LEDs for {{ board }}
+ *
+ * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
+ *
+ * \par License
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * File generated automaticly - do not edit!
+ */
+
+#include "include/spi.hpp"
+
+#ifdef CONFIG_BOARD_SPIS_ENABLE
+
+#include "distortos/chip/ChipOutputPin.hpp"
+#include "distortos/chip/ChipAlternativePin.hpp"
+#include "distortos/board/STM32-SPI-Pins.hpp"
+
+namespace distortos
+{
+
+namespace board
+{
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| global objects
++---------------------------------------------------------------------------------------------------------------------*/
+
+distortos::chip::ChipAlternativePin clk{chip::Pin::pa5};
+distortos::chip::ChipAlternativePin miso{chip::Pin::pa11};
+distortos::chip::ChipAlternativePin mosi{chip::Pin::pa12};
+distortos::chip::ChipOutputPin cs{chip::Pin::pa4};
+
+distortos::board::SpiPins spi1pins(clk, miso, mosi, cs);
+
+}	// namespace board
+
+}	// namespace distortos
+
+#endif	// def CONFIG_BOARD_SPIS_ENABLE

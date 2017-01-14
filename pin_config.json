@@ -21,7 +21,8 @@
 	],
  "spis_pins":
 	[
-	 {"id":"spi1_pins","clk":"spi1_clk","miso":"spi1_miso","mosi":"spi1_mosi","cs":"spi1_cs"}
+	 {"id":"spi1_pins","clk":"spi1_clk","miso":"spi1_miso","mosi":"spi1_mosi","cs":"spi1_cs"},
+	 {"id":"spi2_pins","clk":"spi1_clk","miso":"spi1_miso","mosi":"spi1_mosi","cs":"spi1_cs"}
 	]
 }
 

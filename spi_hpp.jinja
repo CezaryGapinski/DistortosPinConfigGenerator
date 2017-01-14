@@ -1,0 +1,83 @@
+/**
+ * \file
+ * \brief Declaration of SPIs for {{ board }}
+ *
+ * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
+ *
+ * \par License
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * File generated automaticly - do not edit!
+ */
+
+#ifndef SOURCE_BOARD_STM32_{{ board }}_INCLUDE_DISTORTOS_BOARD_SPIS_HPP_
+#define SOURCE_BOARD_STM32_{{ board }}_INCLUDE_DISTORTOS_BOARD_SPIS_HPP_
+
+#include "distortos/chip/STM32-GPIO{{ gpio_version }}.hpp"
+
+#include <array>
+
+namespace distortos
+{
+
+#ifdef CONFIG_BOARD_SPIS_ENABLE
+
+namespace board
+{
+
+class SpiPins;
+
+}	// namespace chip
+
+#endif	// def CONFIG_BOARD_SPIS_ENABLE
+
+namespace board
+{
+
+/// total number of SPIs on the board
+constexpr size_t totalSpis { {{ spis_number }} };
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| spis indexes
++---------------------------------------------------------------------------------------------------------------------*/
+
+{% for item in spi_pins_list %}
+/// index of {{item.id}}
+constexpr size_t {{item.id}}Index { {{loop.index - 1}} };
+{% endfor %}
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| indexed access to pin identifiers
++---------------------------------------------------------------------------------------------------------------------*/
+
+{% for item in spi_pins_list %}
+/// index of {{item.id}}
+extern distortos::board::SpiPins {{ item.id }};
+{% endfor %}
+
+/// array with pin identifiers of all spi Pins
+constexpr std::array<SpiPins *, totalSpis> spiPins
+{
+{% for item in spi_pins_list %}
+/// index of {{item.id}}
+ &{{item.id}},
+{% endfor %}
+};
+
+#ifdef CONFIG_BOARD_SPIS_ENABLE
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| indexed access to spi pins objects
++---------------------------------------------------------------------------------------------------------------------*/
+
+/// array with all spi pins objects
+extern const distortos::board::SpiPins spis[totalSpis];
+
+#endif	// def CONFIG_BOARD_SPIS_ENABLE
+
+}	// namespace board
+
+}	// namespace distortos
+
+#endif	// SOURCE_BOARD_STM32_STM32L0_NUCLEO_L073RZ_CUSTOM_INCLUDE_DISTORTOS_BOARD_SPIS_HPP_
