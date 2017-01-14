@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Declaration of LEDs for STM32F0_NUCLEO_L073RZ
+ * \brief Declaration of LEDs for NUCLEO_L073RZ_CUSTOM
  *
  * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
@@ -31,10 +31,10 @@ namespace board
 chip::ChipOutputPin leds[totalLeds]
 {  
 	/// index of chip::Pin::pa7
-	chip::ChipOutputPin{ chip::Pin::pa7, False, high, up, False }, 
+	chip::ChipOutputPin{ chip::Pin::pa7, false, high, up, False }, 
  
 	/// index of chip::Pin::pa8
-	chip::ChipOutputPin{ chip::Pin::pa8, False, high, up, False }, 
+	chip::ChipOutputPin{ chip::Pin::pa8, false, high, up, False }, 
  
 };
 

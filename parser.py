@@ -1,7 +1,7 @@
 import json
 import jinja2
-
-from pprint import pprint
+import os.path
+import sys
 
 class spiPins:
     def __init__(self, id, clk, miso, mosi, cs):
@@ -10,6 +10,12 @@ class spiPins:
         self.miso = miso
         self.mosi = mosi
         self.cs = cs
+
+if (len(sys.argv) != 2):
+    print "You must set argument!!!"
+    sys.exit(2)
+    
+cmdargs_path = str(sys.argv[1])
 
 with open('pin_config.json') as data_file:    
     data = json.load(data_file)
@@ -71,31 +77,40 @@ templateVars = {    "board" : data["board"],
                     "spi_pins_list" : spilist
                }
 
+include_directory = cmdargs_path + "include/distortos/board"
+
+if not os.path.exists(include_directory):
+    os.makedirs(include_directory)
+
 template = templateEnv.get_template( LEDS_HPP_TEMPLATE )
 outputText = template.render( templateVars )
 
-file=open('./leds.hpp', 'w')
+filename = include_directory + "/" + "%s.hpp" % "leds"
+file=open(filename, 'w')
 file.write(outputText)
 file.close()
 
 template = templateEnv.get_template( LEDS_CPP_TEMPLATE )
 outputText = template.render( templateVars )
 
-file=open('./leds.cpp', 'w')
+filename = cmdargs_path + "%s.cpp" % (data["board"] + "-leds")
+file=open(filename, 'w')
 file.write(outputText)
 file.close()
 
 template = templateEnv.get_template( SPIS_HPP_TEMPLATE )
 outputText = template.render( templateVars )
 
-file=open('./spi.hpp', 'w')
+filename = include_directory + "/" + "%s.hpp" % "spi"
+file=open(filename, 'w')
 file.write(outputText)
 file.close()
 
 template = templateEnv.get_template( SPIS_CPP_TEMPLATE )
 outputText = template.render( templateVars )
 
-file=open('./spi.cpp', 'w')
+filename = cmdargs_path + "%s.cpp" % (data["board"] + "-spi")
+file=open(filename, 'w')
 file.write(outputText)
 file.close()
 

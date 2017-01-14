@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Declaration of SPIs for STM32F0_NUCLEO_L073RZ
+ * \brief Declaration of SPIs for NUCLEO_L073RZ_CUSTOM
  *
  * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *

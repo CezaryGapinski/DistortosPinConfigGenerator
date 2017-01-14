@@ -1,5 +1,5 @@
 {
- "board":"STM32F0_NUCLEO_L073RZ",
+ "board":"NUCLEO_L073RZ_CUSTOM",
  "gpio_driver_version":"v2",
  "output_pins":[
 	 {"id":"led_pin0","pin":"pa7","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","initialState":false},

@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Declaration of LEDs for STM32F0_NUCLEO_L073RZ
+ * \brief Declaration of LEDs for NUCLEO_L073RZ_CUSTOM
  *
  * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
@@ -11,8 +11,8 @@
  * File generated automaticly - do not edit!
  */
 
-#ifndef SOURCE_BOARD_STM32_STM32F0_NUCLEO_L073RZ_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
-#define SOURCE_BOARD_STM32_STM32F0_NUCLEO_L073RZ_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+#ifndef SOURCE_BOARD_STM32_NUCLEO_L073RZ_CUSTOM_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+#define SOURCE_BOARD_STM32_NUCLEO_L073RZ_CUSTOM_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
 
 #include "distortos/chip/STM32-GPIOv2.hpp"
 
