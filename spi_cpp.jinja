@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Declaration of LEDs for {{ board }}
+ * \brief Declaration of SPIs for {{ board }}
  *
  * \author Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
@@ -28,13 +28,35 @@ namespace board
 /*---------------------------------------------------------------------------------------------------------------------+
 | global objects
 +---------------------------------------------------------------------------------------------------------------------*/
+{% for item in spi_pins_list %}
+distortos::chip::ChipAlternativePin {{item.clk["id"]}} { chip::Pin::{{item.clk["pin"]}},
+	{% filter lower %}{{item.clk["openDrain"]}}{% endfilter %},
+	chip::PinOutputSpeed::{{item.clk["pinOutputSpeed"]}},
+	chip::PinPull::{{item.clk["pinPull"]}},
+	chip::PinAlternateFunction::{{item.clk["alternateFunction"]}}
+};
 
-distortos::chip::ChipAlternativePin clk{chip::Pin::pa5};
-distortos::chip::ChipAlternativePin miso{chip::Pin::pa11};
-distortos::chip::ChipAlternativePin mosi{chip::Pin::pa12};
-distortos::chip::ChipOutputPin cs{chip::Pin::pa4};
+distortos::chip::ChipAlternativePin {{item.miso["id"]}} { chip::Pin::{{item.miso["pin"]}},
+	{% filter lower %}{{item.miso["openDrain"]}}{% endfilter %},
+	chip::PinOutputSpeed::{{item.miso["pinOutputSpeed"]}},
+	chip::PinPull::{{item.miso["pinPull"]}},
+	chip::PinAlternateFunction::{{item.miso["alternateFunction"]}}
+};
+distortos::chip::ChipAlternativePin {{item.mosi["id"]}} { chip::Pin::{{item.mosi["pin"]}},
+	{% filter lower %}{{item.mosi["openDrain"]}}{% endfilter %},
+	chip::PinOutputSpeed::{{item.mosi["pinOutputSpeed"]}},
+	chip::PinPull::{{item.mosi["pinPull"]}},
+	chip::PinAlternateFunction::{{item.mosi["alternateFunction"]}}
+};
+distortos::chip::ChipOutputPin {{item.cs["id"]}} { chip::Pin::{{item.cs["pin"]}},
+	{% filter lower %}{{item.cs["openDrain"]}}{% endfilter %},
+	chip::PinOutputSpeed::{{item.cs["pinOutputSpeed"]}},
+	chip::PinPull::{{item.cs["pinPull"]}},
+	{{item.cs["initialState"]}}
+};
 
-distortos::board::SpiPins spi1pins(clk, miso, mosi, cs);
+distortos::board::SpiPins {{item.id}}({{item.clk["id"]}}, {{item.miso["id"]}}, {{item.mosi["id"]}}, {{item.cs["id"]}});
+{% endfor %}
 
 }	// namespace board
 

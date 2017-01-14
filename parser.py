@@ -21,6 +21,7 @@ LEDS_HPP_TEMPLATE = "leds_hpp.jinja"
 LEDS_CPP_TEMPLATE = "leds_cpp.jinja"
 
 SPIS_HPP_TEMPLATE = "spi_hpp.jinja"
+SPIS_CPP_TEMPLATE = "spi_cpp.jinja"
 
 leds_ids = []
 leds_id_to_out_pin_ids = []
@@ -60,14 +61,6 @@ for x in data["spis_pins"]:
     spilist[i].id = x["id"]
             
     i += 1
-        
-for x in spilist:
-    print(x.clk)
-    print(x.miso)
-    print(x.mosi)
-    print(x.cs)
-    print(x.id)
-
       
 templateVars = {    "board" : data["board"],
                     "gpio_version" : data["gpio_driver_version"],
@@ -96,6 +89,13 @@ template = templateEnv.get_template( SPIS_HPP_TEMPLATE )
 outputText = template.render( templateVars )
 
 file=open('./spi.hpp', 'w')
+file.write(outputText)
+file.close()
+
+template = templateEnv.get_template( SPIS_CPP_TEMPLATE )
+outputText = template.render( templateVars )
+
+file=open('./spi.cpp', 'w')
 file.write(outputText)
 file.close()
 
