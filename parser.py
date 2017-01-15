@@ -92,8 +92,11 @@ for x in data["output_pins"]:
 for x in data["alternative_pins"]:
     pin_without_number = str(x["pin"])
     pins_type.add(pin_without_number.translate(None, digits))
+    
+fileTypeInHeader = "empty"
 
 templateVars = {    "board" : data["board"],
+                    "file_type_in_header" : fileTypeInHeader,
                     "gpio_version" : data["gpio_driver_version"],
 		            "leds_number" : len(data["leds"]),
                     "leds_ids" : leds_ids,
@@ -107,18 +110,21 @@ include_directory = cmdargs_path + "include/distortos/board"
 
 if not os.path.exists(include_directory):
     os.makedirs(include_directory)
-    
+
+templateVars["file_type_in_header"] = "LED"   
 filename = include_directory + "/" + "%s.hpp" % "leds"
 generateJinja2File(filename, LEDS_HPP_TEMPLATE, templateVars)
 
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-leds")
 generateJinja2File(filename, LEDS_CPP_TEMPLATE , templateVars)
 
+templateVars["file_type_in_header"] = "SPI" 
 filename = include_directory + "/" + "%s.hpp" % "spi"
 generateJinja2File(filename, SPIS_HPP_TEMPLATE , templateVars)
 
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-spi")
 generateJinja2File(filename, SPIS_CPP_TEMPLATE , templateVars)
 
+templateVars["file_type_in_header"] = "LowLevelPinInitialization" 
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
 generateJinja2File(filename, LOW_LEVEL_PIN_INIT_CPP_TEMPLATE , templateVars)
