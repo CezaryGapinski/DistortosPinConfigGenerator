@@ -1,0 +1,31 @@
+{% include 'templates/header.jinja' %}
+
+#include "distortos/board/buttons.hpp"
+
+#ifdef CONFIG_BOARD_BUTTONS_ENABLE
+
+#include "distortos/chip/ChipInputPin.hpp"
+
+namespace distortos
+{
+
+namespace board
+{
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| global objects
++---------------------------------------------------------------------------------------------------------------------*/
+
+const chip::ChipInputPin buttons[totalButtons]
+{
+{ {% for item in buttons_pins %} 
+	/// index of chip::Pin::{{item["pin"]}}
+	chip::ChipInputPin{ chip::Pin::{{item["pin"]}}, chip::PinPull::{{item["pinPull"]}} }, 
+{% endfor %}
+};
+
+}	// namespace board
+
+}	// namespace distortos
+
+#endif	// def CONFIG_BOARD_BUTTONS_ENABLE

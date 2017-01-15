@@ -62,9 +62,13 @@ templateEnv = jinja2.Environment( loader=templateLoader )
 LEDS_HPP_TEMPLATE = "templates/leds_hpp.jinja"
 LEDS_CPP_TEMPLATE = "templates/leds_cpp.jinja"
 
+BUTTONS_HPP_TEMPLATE = "templates/buttons_hpp.jinja"
+BUTTONS_CPP_TEMPLATE = "templates/buttons_cpp.jinja"
+
 SPIS_HPP_TEMPLATE = "templates/spi_hpp.jinja"
 SPIS_CPP_TEMPLATE = "templates/spi_cpp.jinja"
 
+LOW_LEVEL_PIN_INIT_HPP_TEMPLATE = "templates/lowLevelPinInitialization_hpp.jinja"
 LOW_LEVEL_PIN_INIT_CPP_TEMPLATE = "templates/lowLevelPinInitialization_cpp.jinja"
 
 leds_ids = []
@@ -81,6 +85,21 @@ for x in leds_id_to_out_pin_ids:
   for y in data["output_pins"]:
     if y["id"] == x:
       leds_pins.append(y)
+      
+buttons_ids = []
+buttons_id_to_in_pin_ids = []
+buttons_pins = []
+
+for x in data["buttons"]:
+  buttons_ids.append(x["id"])
+
+for x in data["buttons"]:
+  buttons_id_to_in_pin_ids.append(x["input_pins"])
+
+for x in buttons_id_to_in_pin_ids:
+  for y in data["input_pins"]:
+    if y["id"] == x:
+      buttons_pins.append(y)
      
 spilist = generateSpiPinsListConfig(data) 
       
@@ -93,7 +112,7 @@ for x in data["alternative_pins"]:
     pin_without_number = str(x["pin"])
     pins_type.add(pin_without_number.translate(None, digits))
     
-fileTypeInHeader = "empty"
+fileTypeInHeader = "EMPTY"
 
 templateVars = {    "board" : data["board"],
                     "file_type_in_header" : fileTypeInHeader,
@@ -101,6 +120,9 @@ templateVars = {    "board" : data["board"],
 		            "leds_number" : len(data["leds"]),
                     "leds_ids" : leds_ids,
                     "leds_pins" : leds_pins,
+                    "buttons_number" : len(data["buttons"]),
+                    "buttons_ids" : buttons_ids,
+                    "buttons_pins" : buttons_pins,
                     "spis_number" : len(data["spis_pins"]),
                     "spi_pins_list" : spilist,
                     "used_pins_groups" : pins_type
@@ -118,6 +140,13 @@ generateJinja2File(filename, LEDS_HPP_TEMPLATE, templateVars)
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-leds")
 generateJinja2File(filename, LEDS_CPP_TEMPLATE , templateVars)
 
+templateVars["file_type_in_header"] = "BUTTON"   
+filename = include_directory + "/" + "%s.hpp" % "buttons"
+generateJinja2File(filename, BUTTONS_HPP_TEMPLATE, templateVars)
+
+filename = cmdargs_path + "%s.cpp" % (data["board"] + "-buttons")
+generateJinja2File(filename, BUTTONS_CPP_TEMPLATE , templateVars)
+
 templateVars["file_type_in_header"] = "SPI" 
 filename = include_directory + "/" + "%s.hpp" % "spi"
 generateJinja2File(filename, SPIS_HPP_TEMPLATE , templateVars)
@@ -126,5 +155,8 @@ filename = cmdargs_path + "%s.cpp" % (data["board"] + "-spi")
 generateJinja2File(filename, SPIS_CPP_TEMPLATE , templateVars)
 
 templateVars["file_type_in_header"] = "LowLevelPinInitialization" 
+filename = include_directory + "/" + "%s.hpp" % "LowLevelPinInitialization"
+generateJinja2File(filename, LOW_LEVEL_PIN_INIT_HPP_TEMPLATE , templateVars)
+
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
 generateJinja2File(filename, LOW_LEVEL_PIN_INIT_CPP_TEMPLATE , templateVars)
