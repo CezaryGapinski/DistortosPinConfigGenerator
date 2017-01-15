@@ -11,7 +11,7 @@
  "alternative_pins":[
 	{"id":"spi1_clk","pin":"pb7","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
 	{"id":"spi1_miso","pin":"pb8","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
-	{"id":"spi1_mosi","pin":"pb9","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
+	{"id":"spi1_mosi","pin":"pc9","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
 	{"id":"spi2_clk","pin":"pb10","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
 	{"id":"spi2_miso","pin":"pb11","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"},
 	{"id":"spi2_mosi","pin":"pb12","openDrain":false,"pinOutputSpeed":"high","pinPull":"up","alternateFunction":"af0"}

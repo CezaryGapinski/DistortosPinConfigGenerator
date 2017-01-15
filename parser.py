@@ -2,6 +2,7 @@ import json
 import jinja2
 import os.path
 import sys
+from string import digits
 
 class spiPins:
     def __init__(self, id, clk, miso, mosi, cs):
@@ -28,6 +29,8 @@ LEDS_CPP_TEMPLATE = "leds_cpp.jinja"
 
 SPIS_HPP_TEMPLATE = "spi_hpp.jinja"
 SPIS_CPP_TEMPLATE = "spi_cpp.jinja"
+
+LOW_LEVEL_PIN_INIT_CPP_TEMPLATE = "lowLevelPinInitialization_cpp.jinja"
 
 leds_ids = []
 leds_id_to_out_pin_ids = []
@@ -68,13 +71,27 @@ for x in data["spis_pins"]:
             
     i += 1
       
+      
+pins_type = set()
+for x in data["output_pins"]:
+    pin_without_number = str(x["pin"])
+    pins_type.add(pin_without_number.translate(None, digits))
+    
+for x in data["alternative_pins"]:
+    pin_without_number = str(x["pin"])
+    pins_type.add(pin_without_number.translate(None, digits))
+
+for x in pins_type:   
+    print(x)
+      
 templateVars = {    "board" : data["board"],
                     "gpio_version" : data["gpio_driver_version"],
 		            "leds_number" : len(data["leds"]),
                     "leds_ids" : leds_ids,
                     "leds_pins" : leds_pins,
                     "spis_number" : len(data["spis_pins"]),
-                    "spi_pins_list" : spilist
+                    "spi_pins_list" : spilist,
+                    "used_pins_groups" : pins_type
                }
 
 include_directory = cmdargs_path + "include/distortos/board"
@@ -110,6 +127,14 @@ template = templateEnv.get_template( SPIS_CPP_TEMPLATE )
 outputText = template.render( templateVars )
 
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-spi")
+file=open(filename, 'w')
+file.write(outputText)
+file.close()
+
+template = templateEnv.get_template( LOW_LEVEL_PIN_INIT_CPP_TEMPLATE )
+outputText = template.render( templateVars )
+
+filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
 file=open(filename, 'w')
 file.write(outputText)
 file.close()

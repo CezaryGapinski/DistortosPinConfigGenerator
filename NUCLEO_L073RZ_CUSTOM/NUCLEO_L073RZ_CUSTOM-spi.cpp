@@ -42,7 +42,7 @@ distortos::chip::ChipAlternativePin spi1_miso { chip::Pin::pb8,
 	chip::PinPull::up,
 	chip::PinAlternateFunction::af0
 };
-distortos::chip::ChipAlternativePin spi1_mosi { chip::Pin::pb9,
+distortos::chip::ChipAlternativePin spi1_mosi { chip::Pin::pc9,
 	false,
 	chip::PinOutputSpeed::high,
 	chip::PinPull::up,
