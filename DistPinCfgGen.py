@@ -1,7 +1,18 @@
+#
+# file: DistPinCfgGen.py
+# Python script used to generating board configuration files for Distortos embedded operating system
+# author: Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
+# https://github.com/CezaryGapinski/DistortosPinConfigGenerator
+#
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+# distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+
 import json
 import jinja2
 import os.path
 import sys
+import getopt
 from string import digits
 
 class spiPins:
@@ -11,6 +22,24 @@ class spiPins:
         self.miso = miso
         self.mosi = mosi
         self.cs = cs
+        
+def checkInputParams(argv, parameters):
+    try:
+        opts, args = getopt.getopt(argv, "hc:o:", ["config=", "opath="])
+        if (len(sys.argv) < 2): 
+            print "You must set argument!!!" 
+            sys.exit(2) 
+    except getopt.GetoptError:
+        print 'DistPinCfgGen.py -c path/to/config.json -o output/path/'
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'DistPinCfgGen.py -c path/to/config.json -o output/path/'
+            sys.exit()
+        elif opt in ("-c", "--config"):
+            parameters[0] = arg
+        elif opt in ("-o", "--opath"):
+            parameters[1] = arg
 
 def generateJinja2File(filename, templateFile, templateVars):
     template = templateEnv.get_template( templateFile )
@@ -47,14 +76,14 @@ def generateSpiPinsListConfig(data):
         
     return spilist
 
-if (len(sys.argv) != 2):
-    print "You must set argument!!!"
-    sys.exit(2)
+parameters = ['', '']
+
+checkInputParams(sys.argv[1:], parameters)
     
-with open('pin_config.json') as data_file:    
+with open(parameters[0]) as data_file:    
     data = json.load(data_file)
-    
-cmdargs_path = str(sys.argv[1])
+
+cmdargs_path = parameters[1]
 cmdargs_path += data["board"] + "/"
 
 templateLoader = jinja2.FileSystemLoader( searchpath="." )
