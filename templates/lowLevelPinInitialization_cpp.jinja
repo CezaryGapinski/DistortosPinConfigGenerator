@@ -15,6 +15,7 @@ namespace board
 +---------------------------------------------------------------------------------------------------------------------*/
 
 void lowLevelPinInitialization()
+{
 	RCC->IOPENR |={% for item in used_pins_groups %}
 {% if item == "pa" %}	RCC_IOPENR_GPIOAEN |{% endif %}{% if item == "pb" %}	RCC_IOPENR_GPIOBEN |{% endif %}{% if item == "pc" %}	RCC_IOPENR_GPIOCEN |{% endif %}{% if item == "pd" %}	RCC_IOPENR_GPIODEN |{% endif %}{% endfor %}
 			0;

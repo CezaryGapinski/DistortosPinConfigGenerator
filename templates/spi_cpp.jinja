@@ -1,6 +1,6 @@
 {% include 'templates/header.jinja' %}
 
-#include "include/spi.hpp"
+#include "distortos/board/spi.hpp"
 
 #ifdef CONFIG_BOARD_SPIS_ENABLE
 
@@ -41,7 +41,7 @@ distortos::chip::ChipOutputPin {{item.cs["id"]}} { chip::Pin::{{item.cs["pin"]}}
 	{% filter lower %}{{item.cs["openDrain"]}}{% endfilter %},
 	chip::PinOutputSpeed::{{item.cs["pinOutputSpeed"]}},
 	chip::PinPull::{{item.cs["pinPull"]}},
-	{{item.cs["initialState"]}}
+	{% filter lower %}{{item.cs["initialState"]}}{% endfilter %}
 };
 
 distortos::board::SpiPins {{item.id}}({{item.clk["id"]}}, {{item.miso["id"]}}, {{item.mosi["id"]}}, {{item.cs["id"]}});

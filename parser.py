@@ -51,10 +51,11 @@ if (len(sys.argv) != 2):
     print "You must set argument!!!"
     sys.exit(2)
     
-cmdargs_path = str(sys.argv[1])
-
 with open('pin_config.json') as data_file:    
     data = json.load(data_file)
+    
+cmdargs_path = str(sys.argv[1])
+cmdargs_path += data["board"] + "/"
 
 templateLoader = jinja2.FileSystemLoader( searchpath="." )
 templateEnv = jinja2.Environment( loader=templateLoader )
@@ -112,6 +113,10 @@ for x in data["alternative_pins"]:
     pin_without_number = str(x["pin"])
     pins_type.add(pin_without_number.translate(None, digits))
     
+for x in data["input_pins"]:
+    pin_without_number = str(x["pin"])
+    pins_type.add(pin_without_number.translate(None, digits))
+    
 fileTypeInHeader = "EMPTY"
 
 templateVars = {    "board" : data["board"],
@@ -154,8 +159,8 @@ generateJinja2File(filename, SPIS_HPP_TEMPLATE , templateVars)
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-spi")
 generateJinja2File(filename, SPIS_CPP_TEMPLATE , templateVars)
 
-templateVars["file_type_in_header"] = "LowLevelPinInitialization" 
-filename = include_directory + "/" + "%s.hpp" % "LowLevelPinInitialization"
+templateVars["file_type_in_header"] = "lowLevelPinInitialization" 
+filename = include_directory + "/" + "%s.hpp" % "lowLevelPinInitialization"
 generateJinja2File(filename, LOW_LEVEL_PIN_INIT_HPP_TEMPLATE , templateVars)
 
 filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
