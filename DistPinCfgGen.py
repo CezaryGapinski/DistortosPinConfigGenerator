@@ -9,6 +9,7 @@
 #
 
 import json
+from jsonschema import validate
 import jinja2
 import os.path
 import sys
@@ -48,7 +49,7 @@ def generateJinja2File(filename, templateFile, templateVars):
     file=open(filename, 'w')
     file.write(outputText)
     file.close()
-
+    
 def generateSpiPinsListConfig(data):
     spilist = [ spiPins(0, 0, 0, 0, 0) for i in data["spis_pins"]]     
           
@@ -82,6 +83,13 @@ checkInputParams(sys.argv[1:], parameters)
     
 with open(parameters[0]) as data_file:    
     data = json.load(data_file)
+    
+with open("templates/pin_config_v2_schema.json") as data_file:    
+    schema = json.load(data_file)
+    
+print(schema)
+
+validate(data, schema)
 
 cmdargs_path = parameters[1]
 cmdargs_path += data["board"] + "/"
