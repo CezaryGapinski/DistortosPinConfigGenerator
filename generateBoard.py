@@ -15,8 +15,8 @@ import sys
 import getopt
 from string import digits
 
-gpio_perihperals_paths = {"v1":"jsonTemplatesGPIOv1",
-                          "v2":"jsonTemplatesGPIOv2"
+gpio_perihperals_paths = {"v1":"peripherals/GPIOv1/jinjaTemplates",
+                          "v2":"peripherals/GPIOv2/jinjaTemplates"
                           }
 
 def checkInputParams(script_name, argv, parameters):
