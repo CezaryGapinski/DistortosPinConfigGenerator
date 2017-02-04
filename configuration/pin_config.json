@@ -2,26 +2,16 @@
  "board":"NUCLEO-L073RZ",
  "gpio_driver_version":"v2",
  "output_pins":[
-	 {"id":"led_pin0","pin":"pa5","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","initialState":false,"inverted":false},
-	 {"id":"spi1_cs","pin":"pa4","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","initialState":false,"inverted":false}
+	 {"id":"led_pin0","pin":"pa5","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","initialState":false,"inverted":false}
         ],
  "input_pins":[
 	 {"id":"button_pin0","pin":"pc13","pinPull":"none","inverted":false}
         ],
- "alternative_pins":[
-	{"id":"spi1_clk","pin":"pa5","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","alternateFunction":"af0"},
-	{"id":"spi1_miso","pin":"pa11","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","alternateFunction":"af0"},
-	{"id":"spi1_mosi","pin":"pa12","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","alternateFunction":"af0"}
-       ],
  "leds":[
 	 {"id":"onboard_led","output_pins":"led_pin0"}
         ],
  "buttons":[
 	 {"id":"onboard_button","input_pins":"button_pin0"}
-	],
- "spis_pins":
-	[
-	 {"id":"spi1_pins","clk":"spi1_clk","miso":"spi1_miso","mosi":"spi1_mosi","cs":"spi1_cs"}
 	]
 }
 
