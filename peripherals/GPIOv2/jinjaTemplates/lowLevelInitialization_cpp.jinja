@@ -1,0 +1,45 @@
+{% include template_dir + "/header_src_file.jinja" %}
+
+#include "distortos/board/lowLevelInitialization.hpp"
+
+#include "distortos/chip/CMSIS-proxy.h"
+
+namespace distortos
+{
+
+namespace board
+{
+
+/*---------------------------------------------------------------------------------------------------------------------+
+| global functions
++---------------------------------------------------------------------------------------------------------------------*/
+
+void lowLevelInitialization()
+{
+{% if chip_family == "STM32F4" -%}
+	RCC->AHB1ENR |=
+{% elif chip_family == "STM32L0" -%}
+	RCC->IOPENR |=
+{% endif -%} 
+{% for item in used_pins_groups -%}
+	{% if item == "pa" -%}	
+		{% if chip_family == "STM32F4" -%}
+			RCC_AHB1ENR_GPIOAEN |
+		{% elif chip_family == "STM32L0" -%}
+			RCC_IOPENR_GPIOAEN |
+		{% endif -%} 
+	{% elif item == "pb" -%}	
+		{% if chip_family == "STM32F4" -%}
+			RCC_AHB1ENR_GPIOBEN |
+		{% elif chip_family == "STM32L0" -%}
+			RCC_IOPENR_GPIOBEN |
+		{% endif -%} 
+	{% endif -%}
+{% endfor -%}
+			0;
+}
+
+}	// namespace board
+
+}	// namespace distortos
+{{''}}

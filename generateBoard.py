@@ -119,8 +119,7 @@ def main():
     BUTTONS_HPP_TEMPLATE = gpio_template_dir + "/buttons_hpp.jinja"
     BUTTONS_CPP_TEMPLATE = gpio_template_dir + "/buttons_cpp.jinja"
     
-    LOW_LEVEL_PIN_INIT_HPP_TEMPLATE = gpio_template_dir + "/lowLevelPinInitialization_hpp.jinja"
-    LOW_LEVEL_PIN_INIT_CPP_TEMPLATE = gpio_template_dir + "/lowLevelPinInitialization_cpp.jinja"
+    LOW_LEVEL_INIT_CPP_TEMPLATE = gpio_template_dir + "/lowLevelInitialization_cpp.jinja"
     
     KCONFIG_BOARD_CHOICES_TEMPLATE = gpio_template_dir + "/Kconfig-boardChoices.jinja"
     KCONFIG_BOARD_OPTIONS_TEMPLATE = gpio_template_dir + "/Kconfig-boardOptions.jinja"
@@ -178,11 +177,8 @@ def main():
     generateJinja2File(filename, BUTTONS_CPP_TEMPLATE, template_vars)
     
     template_vars["file_type_in_header"] = "lowLevelPinInitialization" 
-    filename = include_directory + "/" + "%s.hpp" % "lowLevelPinInitialization"
-    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_HPP_TEMPLATE, template_vars)
-    
-    filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
-    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_CPP_TEMPLATE, template_vars)
+    filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelInitialization")
+    generateJinja2File(filename, LOW_LEVEL_INIT_CPP_TEMPLATE, template_vars)
     
     template_vars["file_type_in_header"] = "Kconfig-boardChoices"
     filename = cmdargs_path + "%s" % "Kconfig-boardChoices"

@@ -4,7 +4,7 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of lowLevelPinInitializations for 32F429IDISCOVERY
+ * \brief Declaration of lowLevelPinInitializations for NUCLEO-L073RZ
  *
  * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  * \par License
@@ -13,8 +13,9 @@
  *
  */
 
-#ifndef SOURCE_BOARD_STM32_STM32F4_32F429IDISCOVERY_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
-#define SOURCE_BOARD_STM32_STM32F4_32F429IDISCOVERY_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
+#include "distortos/board/lowLevelPinInitialization.hpp"
+
+#include "distortos/chip/CMSIS-proxy.h"
 
 namespace distortos
 {
@@ -22,10 +23,18 @@ namespace distortos
 namespace board
 {
 
-void lowLevelPinInitialization();
+/*---------------------------------------------------------------------------------------------------------------------+
+| global functions
++---------------------------------------------------------------------------------------------------------------------*/
+
+void lowLevelPinInitialization()
+{
+	RCC->IOPENR |=
+	RCC_IOPENR_GPIOCEN |
+	RCC_IOPENR_GPIOAEN |
+			0;
+}
 
 }	// namespace board
 
 }	// namespace distortos
-
-#endif	// SOURCE_BOARD_STM32_STM32F4_32F429IDISCOVERY_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
