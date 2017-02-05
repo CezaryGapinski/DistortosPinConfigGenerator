@@ -31,7 +31,7 @@ namespace board
 
 chip::ChipOutputPin leds[totalLeds]
 {  
-	/// index of chip::Pin::pg13
+	/// configuration for led LD3
 	chip::ChipOutputPin{ chip::Pin::pg13,
 	false,
 	chip::PinOutputSpeed::low,
@@ -39,7 +39,7 @@ chip::ChipOutputPin leds[totalLeds]
 	false,
 	false },
  
-	/// index of chip::Pin::pg14
+	/// configuration for led LD4
 	chip::ChipOutputPin{ chip::Pin::pg14,
 	false,
 	chip::PinOutputSpeed::low,

@@ -148,12 +148,20 @@ def main():
     template_vars["template_dir"] = gpio_template_dir
     template_vars["gpio_version"] = data["gpio_driver_version"]
     template_vars["board_includes"] = board_includes_path
-    template_vars["vdd_mv_configurable"] = data["vdd_mv_configurable"]
-    template_vars["vdd_mv"] = data["vdd_mv"]
-    template_vars["rcc_hse_clock_bybass_configurable"] = data["rcc_hse_clock_bybass_configurable"]
-    template_vars["rcc_hse_clock_bypass_default"] = data["rcc_hse_clock_bypass_default"]
-    template_vars["rcc_hse_frequency_configurable"] = data["rcc_hse_frequency_configurable"]
-    template_vars["rcc_hse_frequency"] = data["rcc_hse_frequency"]
+    
+    # optional values
+    if ("vdd_mv_configurable" in data):
+        template_vars["vdd_mv_configurable"] = data["vdd_mv_configurable"]
+    if ("vdd_mv" in data):
+        template_vars["vdd_mv"] = data["vdd_mv"]
+    if ("rcc_hse_clock_bybass_configurable" in data):    
+        template_vars["rcc_hse_clock_bybass_configurable"] = data["rcc_hse_clock_bybass_configurable"]
+    if ("rcc_hse_clock_bypass_default" in data):     
+        template_vars["rcc_hse_clock_bypass_default"] = data["rcc_hse_clock_bypass_default"]
+    if ("rcc_hse_frequency_configurable" in data):    
+        template_vars["rcc_hse_frequency_configurable"] = data["rcc_hse_frequency_configurable"]
+    if ("rcc_hse_frequency" in data): 
+        template_vars["rcc_hse_frequency"] = data["rcc_hse_frequency"]
     
     template_vars["file_type_in_header"] = "LED"   
     filename = include_directory + "/" + "%s.hpp" % "leds"

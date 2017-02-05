@@ -1,5 +1,9 @@
 {
  "board":"NUCLEO-L073RZ",
+ "board_description": "NUCLEO-L073RZ board with STM32L073RZ chip in LQFP64 package",
+ "chip_family":"STM32L0",
+ "device":"STM32L073RZ",
+ "package":"LQFP64",
  "gpio_driver_version":"v2",
  "output_pins":[
 	 {"id":"led_pin0","pin":"pa5","openDrain":false,"pinOutputSpeed":"veryHigh","pinPull":"up","initialState":false,"inverted":false}
@@ -8,7 +12,7 @@
 	 {"id":"button_pin0","pin":"pc13","pinPull":"none","inverted":false}
         ],
  "leds":[
-	 {"id":"onboard_led","output_pins":"led_pin0"}
+	 {"id":"onboard_led","alternative_id":"green","output_pins":"led_pin0"}
         ],
  "buttons":[
 	 {"id":"onboard_button","input_pins":"button_pin0"}

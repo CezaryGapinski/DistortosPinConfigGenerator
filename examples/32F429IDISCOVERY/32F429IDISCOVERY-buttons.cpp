@@ -32,7 +32,7 @@ namespace board
 const chip::ChipInputPin buttons[totalButtons]
 {
  
-	/// index of chip::Pin::pa0
+	/// configuration for button B1
 	chip::ChipInputPin{ chip::Pin::pa0, chip::PinPull::none, false }, 
 
 };

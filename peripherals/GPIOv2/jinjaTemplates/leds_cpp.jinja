@@ -18,7 +18,7 @@ namespace board
 
 chip::ChipOutputPin leds[totalLeds]
 { {% for item in leds_pins %} 
-	/// index of chip::Pin::{{item["pin"]}}
+	/// configuration for led {% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}
 	chip::ChipOutputPin{ chip::Pin::{{item["pin"]}},
 	{% filter lower %}{{item["openDrain"]}}{% endfilter %},
 	chip::PinOutputSpeed::{{item["pinOutputSpeed"]}},
