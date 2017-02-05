@@ -1,7 +1,7 @@
-{% include template_dir + "/header.jinja" %}
+{% include template_dir + "/header_src_file.jinja" %}
 
-#ifndef SOURCE_BOARD_STM32_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
-#define SOURCE_BOARD_STM32_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
+#ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
+#define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
 
 namespace distortos
 {
@@ -15,4 +15,5 @@ void lowLevelPinInitialization();
 
 }	// namespace distortos
 
-#endif	// SOURCE_BOARD_STM32_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
+#endif	// SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LOW_LEVEL_PIN_INITIALIZATION_HPP_
+{{''}}

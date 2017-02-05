@@ -50,13 +50,13 @@ def generateJinja2File(filename, template_file, template_vars):
     
 def collectLedsTemplateParams(template_vars, data):
     leds_ids = []
+    leds_alternative_ids = []
     leds_id_to_out_pin_ids = []
     leds_pins = []
     
     for x in data["leds"]:
       leds_ids.append(x["id"])
-    
-    for x in data["leds"]:
+      leds_alternative_ids.append(x["alternative_id"])
       leds_id_to_out_pin_ids.append(x["output_pins"])
     
     for x in leds_id_to_out_pin_ids:
@@ -65,7 +65,7 @@ def collectLedsTemplateParams(template_vars, data):
           leds_pins.append(y)
           
     template_vars["leds_number"] = len(data["leds"])
-    template_vars["leds_ids"] = leds_ids
+    template_vars["leds_ids"] = zip(leds_ids, leds_alternative_ids)
     template_vars["leds_pins"] = leds_pins
     
 def collectButtonsTemplateParams(template_vars, data):
@@ -122,6 +122,18 @@ def main():
     LOW_LEVEL_PIN_INIT_HPP_TEMPLATE = gpio_template_dir + "/lowLevelPinInitialization_hpp.jinja"
     LOW_LEVEL_PIN_INIT_CPP_TEMPLATE = gpio_template_dir + "/lowLevelPinInitialization_cpp.jinja"
     
+    KCONFIG_BOARD_CHOICES_TEMPLATE = gpio_template_dir + "/Kconfig-boardChoices.jinja"
+    KCONFIG_BOARD_OPTIONS_TEMPLATE = gpio_template_dir + "/Kconfig-boardOptions.jinja"
+    
+    RULES_MK_TEMPLATE = gpio_template_dir + "/Rules_mk.jinja"
+    TUPFILE_LUA_TEMPLATE = gpio_template_dir + "/Tupfile_lua.jinja"
+
+    board_includes_path = cmdargs_path + "include"
+    include_directory = cmdargs_path + "include/distortos/board"
+    
+    if not os.path.exists(include_directory):
+        os.makedirs(include_directory)
+    
     template_vars = {}  
     
     collectLedsTemplateParams(template_vars, data)
@@ -129,13 +141,19 @@ def main():
     collectPinGroupsTemplateParams(template_vars, data)    
 
     template_vars["board"] = data["board"]
+    template_vars["chip_family"] = data["chip_family"]
+    template_vars["device"] = data["device"]
+    template_vars["package"] = data["package"]
+    template_vars["board_description"] = data["board_description"]
     template_vars["template_dir"] = gpio_template_dir
     template_vars["gpio_version"] = data["gpio_driver_version"]
-    
-    include_directory = cmdargs_path + "include/distortos/board"
-    
-    if not os.path.exists(include_directory):
-        os.makedirs(include_directory)
+    template_vars["board_includes"] = board_includes_path
+    template_vars["vdd_mv_configurable"] = data["vdd_mv_configurable"]
+    template_vars["vdd_mv"] = data["vdd_mv"]
+    template_vars["rcc_hse_clock_bybass_configurable"] = data["rcc_hse_clock_bybass_configurable"]
+    template_vars["rcc_hse_clock_bypass_default"] = data["rcc_hse_clock_bypass_default"]
+    template_vars["rcc_hse_frequency_configurable"] = data["rcc_hse_frequency_configurable"]
+    template_vars["rcc_hse_frequency"] = data["rcc_hse_frequency"]
     
     template_vars["file_type_in_header"] = "LED"   
     filename = include_directory + "/" + "%s.hpp" % "leds"
@@ -149,14 +167,30 @@ def main():
     generateJinja2File(filename, BUTTONS_HPP_TEMPLATE, template_vars)
     
     filename = cmdargs_path + "%s.cpp" % (data["board"] + "-buttons")
-    generateJinja2File(filename, BUTTONS_CPP_TEMPLATE , template_vars)
+    generateJinja2File(filename, BUTTONS_CPP_TEMPLATE, template_vars)
     
     template_vars["file_type_in_header"] = "lowLevelPinInitialization" 
     filename = include_directory + "/" + "%s.hpp" % "lowLevelPinInitialization"
-    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_HPP_TEMPLATE , template_vars)
+    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_HPP_TEMPLATE, template_vars)
     
     filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelPinInitialization")
-    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_CPP_TEMPLATE , template_vars)
+    generateJinja2File(filename, LOW_LEVEL_PIN_INIT_CPP_TEMPLATE, template_vars)
+    
+    template_vars["file_type_in_header"] = "Kconfig-boardChoices"
+    filename = cmdargs_path + "%s" % "Kconfig-boardChoices"
+    generateJinja2File(filename, KCONFIG_BOARD_CHOICES_TEMPLATE, template_vars)
+    
+    template_vars["file_type_in_header"] = "Kconfig-boardOptions"
+    filename = cmdargs_path + "%s" % "Kconfig-boardOptions"
+    generateJinja2File(filename, KCONFIG_BOARD_OPTIONS_TEMPLATE, template_vars)
+    
+    template_vars["file_type_in_header"] = "Rules.mk"
+    filename = cmdargs_path + "%s.mk" % "Rules"
+    generateJinja2File(filename, RULES_MK_TEMPLATE, template_vars)
+    
+    template_vars["file_type_in_header"] = "Tupfile.lua"
+    filename = cmdargs_path + "%s.lua" % "Tupfile"
+    generateJinja2File(filename, TUPFILE_LUA_TEMPLATE, template_vars)
     
     
 if __name__ == '__main__': main()

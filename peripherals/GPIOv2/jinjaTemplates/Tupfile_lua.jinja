@@ -10,7 +10,7 @@
 -- distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 --
 
-if CONFIG_BOARD_32F429IDISCOVERY == "y" then
+if CONFIG_BOARD_{{ board }} == "y" then
 
 	CXXFLAGS += STANDARD_INCLUDES
 	CXXFLAGS += CHIP_INCLUDES
@@ -18,4 +18,5 @@ if CONFIG_BOARD_32F429IDISCOVERY == "y" then
 
 	tup.include(DISTORTOS_TOP .. "compile.lua")
 
-end	-- if CONFIG_BOARD_32F429IDISCOVERY == "y" then
+end	-- if CONFIG_BOARD_{{ board }} == "y" then
+{{''}}

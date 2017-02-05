@@ -4,7 +4,7 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of BUTTONs for 32F429IDISCOVERY
+ * \brief Declaration of lowLevelPinInitializations for 32F429IDISCOVERY
  *
  * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  * \par License
@@ -13,11 +13,9 @@
  *
  */
 
-#include "distortos/board/buttons.hpp"
+#include "distortos/board/lowLevelPinInitialization.hpp"
 
-#ifdef CONFIG_BOARD_BUTTONS_ENABLE
-
-#include "distortos/chip/ChipInputPin.hpp"
+#include "distortos/chip/CMSIS-proxy.h"
 
 namespace distortos
 {
@@ -26,19 +24,17 @@ namespace board
 {
 
 /*---------------------------------------------------------------------------------------------------------------------+
-| global objects
+| global functions
 +---------------------------------------------------------------------------------------------------------------------*/
 
-const chip::ChipInputPin buttons[totalButtons]
+void lowLevelPinInitialization()
 {
- 
-	/// index of chip::Pin::pa0
-	chip::ChipInputPin{ chip::Pin::pa0, chip::PinPull::none, false }, 
+	RCC->IOPENR |=
+	RCC_IOPENR_GPIOAEN |
 
-};
+			0;
+}
 
 }	// namespace board
 
 }	// namespace distortos
-
-#endif	// def CONFIG_BOARD_BUTTONS_ENABLE

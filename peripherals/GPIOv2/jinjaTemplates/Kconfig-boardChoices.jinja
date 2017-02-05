@@ -1,0 +1,11 @@
+{% include template_dir + "/header_config_file.jinja" %}
+
+config BOARD_{{ board }}
+	bool "{{ board }}"
+	depends on CHIP_{{ chip_family }}
+	select CHIP_{{ device }}
+	select CHIP_{{ package}}
+	help
+
+		{{ board_description }}
+{{''}}

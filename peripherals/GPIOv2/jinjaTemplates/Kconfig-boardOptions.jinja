@@ -1,0 +1,51 @@
+{% include template_dir + "/header_config_file.jinja" %}
+
+if BOARD_{{ board }}
+
+config BOARD_TOTAL_BUTTONS
+	int
+	default {{ buttons_number }}
+
+config BOARD_TOTAL_LEDS
+	int
+	default {{ leds_number }}
+{% if rcc_hse_clock_bybass_configurable is defined %}
+config CHIP_{{ chip_family }}_VDD_MV_CONFIGURABLE
+	bool
+	default {% if rcc_hse_clock_bybass_configurable %}y{% else %}n{% endif %}
+{% endif -%}
+{% if vdd_mv is defined %}
+config CHIP_{{ chip_family }}_VDD_MV_DEFAULT
+	int
+	default {{ vdd_mv }}
+{% endif -%}
+{% if rcc_hse_clock_bybass_configurable is defined %}
+config CHIP_{{ chip_family }}_RCC_HSE_CLOCK_BYPASS_CONFIGURABLE
+	bool
+	default {% if rcc_hse_clock_bybass_configurable %}y{% else %}n{% endif %}
+{% endif -%}
+{% if rcc_hse_clock_bypass_default is defined %}
+config CHIP_{{ chip_family }}_RCC_HSE_CLOCK_BYPASS_DEFAULT
+	bool
+	default {% if rcc_hse_clock_bypass_default %}y{% else %}n{% endif %}
+{% endif -%}
+{% if rcc_hse_frequency_configurable is defined %}
+config CHIP_{{ chip_family }}_RCC_HSE_FREQUENCY_CONFIGURABLE
+	bool
+	default {% if rcc_hse_frequency_configurable %}y{% else %}n{% endif %}
+{% endif -%}
+{% if rcc_hse_frequency is defined %}
+config CHIP_{{ chip_family }}_RCC_HSE_FREQUENCY_DEFAULT
+	int
+	default {{ rcc_hse_frequency }}
+{% endif %}
+config BOARD_INCLUDES
+	string
+	default "{{ board_includes }}"
+
+config BOARD
+	string
+	default "{{ board }}"
+
+endif	# BOARD_{{ board }}
+{{''}}
