@@ -92,11 +92,13 @@ def collectPinGroupsTemplateParams(template_vars, data):
     pins_type = set()
     for x in data["output_pins"]:
         pin_without_number = str(x["pin"])
-        pins_type.add(pin_without_number.translate(None, digits))
+        pin_without_number = pin_without_number.translate(None, digits)
+        pins_type.add(pin_without_number[1:])
         
     for x in data["input_pins"]:
         pin_without_number = str(x["pin"])
-        pins_type.add(pin_without_number.translate(None, digits))
+        pin_without_number = pin_without_number.translate(None, digits)
+        pins_type.add(pin_without_number[1:])
         
     template_vars["used_pins_groups"] = pins_type
         
@@ -176,7 +178,7 @@ def main():
     filename = cmdargs_path + "%s.cpp" % (data["board"] + "-buttons")
     generateJinja2File(filename, BUTTONS_CPP_TEMPLATE, template_vars)
     
-    template_vars["file_type_in_header"] = "lowLevelPinInitialization" 
+    template_vars["file_type_in_header"] = "lowLevelInitialization" 
     filename = cmdargs_path + "%s.cpp" % (data["board"] + "-lowLevelInitialization")
     generateJinja2File(filename, LOW_LEVEL_INIT_CPP_TEMPLATE, template_vars)
     

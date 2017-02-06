@@ -4,7 +4,7 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of lowLevelPinInitializations for NUCLEO-L073RZ
+ * \brief Definition of lowLevelInitializations for NUCLEO-L073RZ
  *
  * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  * \par License
@@ -13,7 +13,7 @@
  *
  */
 
-#include "distortos/board/lowLevelPinInitialization.hpp"
+#include "distortos/board/lowLevelInitialization.hpp"
 
 #include "distortos/chip/CMSIS-proxy.h"
 
@@ -27,12 +27,12 @@ namespace board
 | global functions
 +---------------------------------------------------------------------------------------------------------------------*/
 
-void lowLevelPinInitialization()
-{
+void lowLevelInitialization()
+{ 
 	RCC->IOPENR |=
-	RCC_IOPENR_GPIOCEN |
 	RCC_IOPENR_GPIOAEN |
-			0;
+	RCC_IOPENR_GPIOCEN |
+	0;
 }
 
 }	// namespace board

@@ -4,7 +4,7 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of BUTTONs for NUCLEO-L073RZ
+ * \brief Definition of BUTTONs for NUCLEO-L073RZ
  *
  * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  * \par License

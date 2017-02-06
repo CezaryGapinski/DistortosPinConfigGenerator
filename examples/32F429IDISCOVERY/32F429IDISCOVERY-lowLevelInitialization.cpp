@@ -4,7 +4,7 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of lowLevelPinInitializations for 32F429IDISCOVERY
+ * \brief Definition of lowLevelInitializations for 32F429IDISCOVERY
  *
  * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  * \par License
@@ -28,10 +28,11 @@ namespace board
 +---------------------------------------------------------------------------------------------------------------------*/
 
 void lowLevelInitialization()
-{
-RCC->AHB1ENR |=
-RCC_AHB1ENR_GPIOAEN |
-		0;
+{ 	
+	RCC->AHB1ENR |=
+	RCC_AHB1ENR_GPIOAEN |
+	RCC_AHB1ENR_GPIOGEN |
+	0;
 }
 
 }	// namespace board
