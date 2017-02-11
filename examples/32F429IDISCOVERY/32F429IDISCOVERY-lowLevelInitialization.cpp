@@ -28,11 +28,17 @@ namespace board
 +---------------------------------------------------------------------------------------------------------------------*/
 
 void lowLevelInitialization()
-{ 	
+{
+#ifdef CONFIG_BOARD_BUTTONS_ENABLE 
 	RCC->AHB1ENR |=
 	RCC_AHB1ENR_GPIOAEN |
+	0;
+#endif
+#ifdef CONFIG_BOARD_LEDS_ENABLE 
+	RCC->AHB1ENR |=
 	RCC_AHB1ENR_GPIOGEN |
 	0;
+#endif
 }
 
 }	// namespace board

@@ -15,28 +15,13 @@ namespace board
 +---------------------------------------------------------------------------------------------------------------------*/
 
 void lowLevelInitialization()
-{ {% if chip_family == "STM32L0" %}
-	RCC->IOPENR |=
-	{% for item in used_pins_groups -%}
-		RCC_IOPENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-{% elif chip_family == "STM32F0" %}
-	RCC->AHBENR |=
-	{% for item in used_pins_groups -%}
-		RCC_AHBENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-{% elif chip_family == "STM32F1" %}
-	RCC->APB2ENR |=
-	{% for item in used_pins_groups -%}
-		RCC_APB2ENR_IOP{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-{% elif chip_family == "STM32F4" %}	
-	RCC->AHB1ENR |=
-	{% for item in used_pins_groups -%}
-		RCC_AHB1ENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-{% endif -%}
-			0;
+{
+#ifdef CONFIG_BOARD_BUTTONS_ENABLE {% set used_pins_groups = used_pins_groups_buttons %}
+{% include gpio_clk_en_template_dir + "/gpioClockEn.jinja" %}
+#endif
+#ifdef CONFIG_BOARD_LEDS_ENABLE {% set used_pins_groups = used_pins_groups_leds %}
+{% include gpio_clk_en_template_dir + "/gpioClockEn.jinja" %}
+#endif
 }
 
 }	// namespace board

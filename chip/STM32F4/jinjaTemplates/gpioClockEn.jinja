@@ -1,0 +1,5 @@
+	RCC->AHB1ENR |=
+	{% for item in used_pins_groups -%}
+		RCC_AHB1ENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
+	{% endfor -%}
+	0;

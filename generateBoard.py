@@ -15,9 +15,15 @@ import sys
 import getopt
 from string import digits
 
-gpio_perihperals_paths = {"v1":"peripherals/GPIOv1/jinjaTemplates",
-                          "v2":"peripherals/GPIOv2/jinjaTemplates"
-                          }
+gpio_perihperals_templates_paths = {"v1":"chip/peripherals/GPIOv1/jinjaTemplates",
+                                    "v2":"chip/peripherals/GPIOv2/jinjaTemplates"
+                                   }
+
+gpio_clock_en_templates_paths = {"STM32F0":"chip/STM32F0/jinjaTemplates",
+                                 "STM32F1":"chip/STM32F1/jinjaTemplates",
+                                 "STM32F4":"chip/STM32F4/jinjaTemplates",
+                                 "STM32L0":"chip/STM32L0/jinjaTemplates"
+                                }
 
 board_templates_path = "templates"
 
@@ -90,19 +96,14 @@ def collectButtonsTemplateParams(template_vars, data):
     template_vars["buttons_ids"] = buttons_ids
     template_vars["buttons_pins"] = buttons_pins
     
-def collectPinGroupsTemplateParams(template_vars, data):
+def collectPinGroupsTemplateParams(data):
     pins_type = set()
-    for x in data["output_pins"]:
+    for x in data:
         pin_without_number = str(x["pin"])
         pin_without_number = pin_without_number.translate(None, digits)
         pins_type.add(pin_without_number[1:])
         
-    for x in data["input_pins"]:
-        pin_without_number = str(x["pin"])
-        pin_without_number = pin_without_number.translate(None, digits)
-        pins_type.add(pin_without_number[1:])
-        
-    template_vars["used_pins_groups"] = pins_type
+    return pins_type
         
  
 def main():
@@ -115,7 +116,8 @@ def main():
     cmdargs_path = parameters[1]
     cmdargs_path += data["board"] + "/"
    
-    gpio_template_dir = gpio_perihperals_paths[data["gpio_driver_version"]]
+    gpio_template_dir = gpio_perihperals_templates_paths[data["gpio_driver_version"]]
+    gpio_clock_en_template_dir = gpio_clock_en_templates_paths[data["chip_family"]]
     
     LEDS_HPP_TEMPLATE = board_templates_path + "/leds_hpp.jinja"
     LEDS_CPP_TEMPLATE = board_templates_path + "/leds_cpp.jinja"
@@ -141,7 +143,8 @@ def main():
     
     collectLedsTemplateParams(template_vars, data)
     collectButtonsTemplateParams(template_vars, data)
-    collectPinGroupsTemplateParams(template_vars, data)    
+    template_vars["used_pins_groups_buttons"] = collectPinGroupsTemplateParams(template_vars["buttons_pins"])
+    template_vars["used_pins_groups_leds"] = collectPinGroupsTemplateParams(template_vars["leds_pins"])
 
     template_vars["board"] = data["board"]
     template_vars["chip_family"] = data["chip_family"]
@@ -150,6 +153,7 @@ def main():
     template_vars["board_description"] = data["board_description"]
     template_vars["board_template_dir"] = board_templates_path
     template_vars["gpio_template_dir"] = gpio_template_dir
+    template_vars["gpio_clk_en_template_dir"] = gpio_clock_en_template_dir
     template_vars["gpio_version"] = data["gpio_driver_version"]
     template_vars["board_includes"] = board_includes_path
     
