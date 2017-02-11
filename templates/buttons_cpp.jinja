@@ -1,4 +1,4 @@
-{% include template_dir + "/header_cpp_file.jinja" %}
+{% include board_template_dir + "/header_cpp_file.jinja" %}
 
 #include "distortos/board/buttons.hpp"
 
@@ -20,7 +20,7 @@ const chip::ChipInputPin buttons[totalButtons]
 {
 {% for item in buttons_pins %} 
 	/// configuration for button {% filter upper %}{{buttons_ids[loop.index - 1]}}{% endfilter %}
-	chip::ChipInputPin{ chip::Pin::{{item["pin"]}}, chip::PinPull::{{item["pinPull"]}}, {% filter lower %}{{item["inverted"]}}{% endfilter %} }, 
+	{% include gpio_template_dir + "/ChipInputPin.jinja" %}
 {% endfor %}
 };
 

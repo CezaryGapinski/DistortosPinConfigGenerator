@@ -19,6 +19,8 @@ gpio_perihperals_paths = {"v1":"peripherals/GPIOv1/jinjaTemplates",
                           "v2":"peripherals/GPIOv2/jinjaTemplates"
                           }
 
+board_templates_path = "templates"
+
 def checkInputParams(script_name, argv, parameters):
     try:
         opts, args = getopt.getopt(argv, "hc:o:", ["config=", "opath="])
@@ -115,19 +117,19 @@ def main():
    
     gpio_template_dir = gpio_perihperals_paths[data["gpio_driver_version"]]
     
-    LEDS_HPP_TEMPLATE = gpio_template_dir + "/leds_hpp.jinja"
-    LEDS_CPP_TEMPLATE = gpio_template_dir + "/leds_cpp.jinja"
+    LEDS_HPP_TEMPLATE = board_templates_path + "/leds_hpp.jinja"
+    LEDS_CPP_TEMPLATE = board_templates_path + "/leds_cpp.jinja"
     
-    BUTTONS_HPP_TEMPLATE = gpio_template_dir + "/buttons_hpp.jinja"
-    BUTTONS_CPP_TEMPLATE = gpio_template_dir + "/buttons_cpp.jinja"
+    BUTTONS_HPP_TEMPLATE = board_templates_path + "/buttons_hpp.jinja"
+    BUTTONS_CPP_TEMPLATE = board_templates_path + "/buttons_cpp.jinja"
     
-    LOW_LEVEL_INIT_CPP_TEMPLATE = gpio_template_dir + "/lowLevelInitialization_cpp.jinja"
+    LOW_LEVEL_INIT_CPP_TEMPLATE = board_templates_path + "/lowLevelInitialization_cpp.jinja"
     
-    KCONFIG_BOARD_CHOICES_TEMPLATE = gpio_template_dir + "/Kconfig-boardChoices.jinja"
-    KCONFIG_BOARD_OPTIONS_TEMPLATE = gpio_template_dir + "/Kconfig-boardOptions.jinja"
+    KCONFIG_BOARD_CHOICES_TEMPLATE = board_templates_path + "/Kconfig-boardChoices.jinja"
+    KCONFIG_BOARD_OPTIONS_TEMPLATE = board_templates_path + "/Kconfig-boardOptions.jinja"
     
-    RULES_MK_TEMPLATE = gpio_template_dir + "/Rules_mk.jinja"
-    TUPFILE_LUA_TEMPLATE = gpio_template_dir + "/Tupfile_lua.jinja"
+    RULES_MK_TEMPLATE = board_templates_path + "/Rules_mk.jinja"
+    TUPFILE_LUA_TEMPLATE = board_templates_path + "/Tupfile_lua.jinja"
 
     board_includes_path = cmdargs_path + "include"
     include_directory = cmdargs_path + "include/distortos/board"
@@ -146,7 +148,8 @@ def main():
     template_vars["device"] = data["device"]
     template_vars["package"] = data["package"]
     template_vars["board_description"] = data["board_description"]
-    template_vars["template_dir"] = gpio_template_dir
+    template_vars["board_template_dir"] = board_templates_path
+    template_vars["gpio_template_dir"] = gpio_template_dir
     template_vars["gpio_version"] = data["gpio_driver_version"]
     template_vars["board_includes"] = board_includes_path
     

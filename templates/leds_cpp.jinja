@@ -1,4 +1,4 @@
-{% include template_dir + "/header_cpp_file.jinja" %}
+{% include board_template_dir + "/header_cpp_file.jinja" %}
 
 #include "distortos/board/leds.hpp"
 
@@ -19,12 +19,7 @@ namespace board
 chip::ChipOutputPin leds[totalLeds]
 { {% for item in leds_pins %} 
 	/// configuration for led {% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}
-	chip::ChipOutputPin{ chip::Pin::{{item["pin"]}},
-	{% filter lower %}{{item["openDrain"]}}{% endfilter %},
-	chip::PinOutputSpeed::{{item["pinOutputSpeed"]}},
-	chip::PinPull::{{item["pinPull"]}},
-	{% filter lower %}{{item["initialState"]}}{% endfilter %},
-	{% filter lower %}{{item["inverted"]}}{% endfilter %} },
+	{% include gpio_template_dir + "/ChipOutputPin.jinja" %}
 {% endfor %} 
 };
 
