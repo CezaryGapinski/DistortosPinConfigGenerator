@@ -1,5 +1,0 @@
-	RCC->APB2ENR |=
-	{% for item in used_pins_groups -%}
-		RCC_APB2ENR_IOP{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-	0;

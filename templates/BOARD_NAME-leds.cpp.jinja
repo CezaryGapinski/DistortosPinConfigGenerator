@@ -1,4 +1,6 @@
-{% include board_template_dir + "/header_cpp_file.jinja" %}
+{{- output_template__leds_cpp -}}
+{%- set file_type_in_header = 'LED' -%}
+{% include "header_cpp_file.jinja" %}
 
 #include "distortos/board/leds.hpp"
 
@@ -19,7 +21,7 @@ namespace board
 chip::ChipOutputPin leds[totalLeds]
 { {% for item in leds_pins %} 
 	/// configuration for led {% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}
-	{% include gpio_template_dir + "/ChipOutputPin.jinja" %}
+	{% include gpio_output_template %}
 {% endfor %} 
 };
 

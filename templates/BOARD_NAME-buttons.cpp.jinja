@@ -1,4 +1,6 @@
-{% include board_template_dir + "/header_cpp_file.jinja" %}
+{{- output_template__buttons_cpp -}}
+{%- set file_type_in_header = 'BUTTON' -%}
+{% include "header_cpp_file.jinja" %}
 
 #include "distortos/board/buttons.hpp"
 
@@ -19,8 +21,8 @@ namespace board
 const chip::ChipInputPin buttons[totalButtons]
 {
 {% for item in buttons_pins %} 
-	/// configuration for button {% filter upper %}{{buttons_ids[loop.index - 1]}}{% endfilter %}
-	{% include gpio_template_dir + "/ChipInputPin.jinja" %}
+	/// configuration for button {% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}
+	{% include gpio_input_template %}
 {% endfor %}
 };
 

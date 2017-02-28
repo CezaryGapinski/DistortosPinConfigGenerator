@@ -1,5 +1,0 @@
-	RCC->AHBENR |=
-	{% for item in used_pins_groups -%}
-		RCC_AHBENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-	0;

@@ -37,31 +37,37 @@ class ChipOutputPin;
 namespace board
 {
 
-/// total number of LEDs on the board
-constexpr size_t totalLeds {CONFIG_BOARD_TOTAL_LEDS};
-
 /*---------------------------------------------------------------------------------------------------------------------+
-| LED indexes
+| led indexes
 +---------------------------------------------------------------------------------------------------------------------*/
+enum Leds {
 
+#if defined(CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE)
+	ld3LedIndex, /// index of LD3 LED (green)
+#endif // def CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE
+#if defined(CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE)
+	ld4LedIndex, /// index of LD4 LED (red)
+#endif // def CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE
+    ldLastInSeq // last value
+};
 
-/// index of LD3 LED (green) 
-constexpr size_t ld3LedIndex {0};
-
-/// index of LD4 LED (red) 
-constexpr size_t ld4LedIndex {1};
-
+/// total number of LEDs on the board
+constexpr size_t totalLeds {ldLastInSeq};
 
 /*---------------------------------------------------------------------------------------------------------------------+
 | alternative (color-based) LED indexes
 +---------------------------------------------------------------------------------------------------------------------*/
 
 
+#if defined(CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE)
 /// alternative index of LD3 LED (green) 
 constexpr size_t greenLedIndex {ld3LedIndex};
+#endif // def CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE
 
+#if defined(CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE)
 /// alternative index of LD4 LED (red) 
 constexpr size_t redLedIndex {ld4LedIndex};
+#endif // def CONFIG_CHIP_STM32_GPIOV2_GPIOG_ENABLE
 
 
 #ifdef CONFIG_BOARD_LEDS_ENABLE

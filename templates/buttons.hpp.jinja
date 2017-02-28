@@ -1,4 +1,6 @@
-{% include board_template_dir + "/header_hpp_file.jinja" %}
+{{- output_template__buttons_hpp -}}
+{%- set file_type_in_header = 'BUTTON' -%}
+{% include "header_hpp_file.jinja" %}
 
 #ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
 #define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
@@ -24,16 +26,21 @@ class ChipInputPin;
 namespace board
 {
 
-/// total number of buttons on the board
-constexpr size_t totalButtons {CONFIG_BOARD_TOTAL_BUTTONS};
-
 /*---------------------------------------------------------------------------------------------------------------------+
 | button indexes
 +---------------------------------------------------------------------------------------------------------------------*/
-{% for item in buttons_ids %}
+enum Buttons {
+{% for id, group in buttons_ids %}
+#if defined(CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE)
 /// index of {% filter upper %}{{item}}{% endfilter %} button
-constexpr size_t {{ item }}ButtonIndex {{ '{' }}{{loop.index - 1}}{{ '}' }};
-{% endfor %}
+	{{ id }}ButtonIndex,
+#endif // def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
+{%- endfor %}
+    blLastInSeq // last value
+};
+
+/// total number of buttons on the board
+constexpr size_t totalButtons {blLastInSeq};
 
 #ifdef CONFIG_BOARD_BUTTONS_ENABLE
 

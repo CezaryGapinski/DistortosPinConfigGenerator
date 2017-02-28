@@ -1,5 +1,0 @@
-	RCC->IOPENR |=
-	{% for item in used_pins_groups -%}
-		RCC_IOPENR_GPIO{% filter upper %}{{ item }}{% endfilter %}EN |
-	{% endfor -%}
-	0;

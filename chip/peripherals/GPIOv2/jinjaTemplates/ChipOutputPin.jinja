@@ -1,3 +1,4 @@
+{{- output_pin_template__v2 -}}
 chip::ChipOutputPin{ chip::Pin::{{item["pin"]}},
 	{% filter lower %}{{item["openDrain"]}}{% endfilter %},
 	chip::PinOutputSpeed::{{item["pinOutputSpeed"]}},

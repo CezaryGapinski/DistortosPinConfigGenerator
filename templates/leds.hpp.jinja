@@ -1,4 +1,6 @@
-{% include board_template_dir + "/header_hpp_file.jinja" %}
+{{- output_template__leds_hpp -}}
+{%- set file_type_in_header = 'LED' -%}
+{% include "header_hpp_file.jinja" %}
 
 #ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
 #define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
@@ -24,25 +26,30 @@ class ChipOutputPin;
 namespace board
 {
 
-/// total number of LEDs on the board
-constexpr size_t totalLeds {CONFIG_BOARD_TOTAL_LEDS};
-
 /*---------------------------------------------------------------------------------------------------------------------+
-| LED indexes
+| led indexes
 +---------------------------------------------------------------------------------------------------------------------*/
+enum Leds {
+{% for id, alternative_id, group in leds_ids %}
+#if defined(CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE)
+	{{ id }}LedIndex, /// index of {% filter upper %}{{id}}{% endfilter %} LED ({{ alternative_id }})
+#endif // def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
+{%- endfor %}
+    ldLastInSeq // last value
+};
 
-{% for id, alternative_id in leds_ids %}
-/// index of {% filter upper %}{{id}}{% endfilter %} LED ({{ alternative_id }}) 
-constexpr size_t {{ id }}LedIndex {{ '{' }}{{loop.index - 1}}{{ '}' }};
-{% endfor %}
+/// total number of LEDs on the board
+constexpr size_t totalLeds {ldLastInSeq};
 
 /*---------------------------------------------------------------------------------------------------------------------+
 | alternative (color-based) LED indexes
 +---------------------------------------------------------------------------------------------------------------------*/
 
-{% for id, alternative_id in leds_ids %}
+{% for id, alternative_id, group in leds_ids %}
+#if defined(CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE)
 /// alternative index of {% filter upper %}{{id}}{% endfilter %} LED ({{ alternative_id }}) 
 constexpr size_t {{ alternative_id }}LedIndex {{ '{' }}{{ id }}LedIndex{{ '}' }};
+#endif // def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
 {% endfor %}
 
 #ifdef CONFIG_BOARD_LEDS_ENABLE

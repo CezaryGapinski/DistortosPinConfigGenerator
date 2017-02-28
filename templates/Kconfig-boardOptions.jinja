@@ -1,14 +1,9 @@
-{% include board_template_dir + "/header_config_file.jinja" %}
+{{- output_template__Kconfig_boardOptions -}}
+{%- set file_type_in_header = 'Kconfig-boardOptions' -%}
+{% include "header_config_file.jinja" %}
 
 if BOARD_{{ board }}
 
-config BOARD_TOTAL_BUTTONS
-	int
-	default {{ buttons_number }}
-
-config BOARD_TOTAL_LEDS
-	int
-	default {{ leds_number }}
 {% if rcc_hse_clock_bybass_configurable is defined %}
 config CHIP_{{ chip_family }}_VDD_MV_CONFIGURABLE
 	bool
