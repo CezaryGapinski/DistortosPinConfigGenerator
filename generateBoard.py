@@ -17,8 +17,8 @@ from string import digits
 import os
 
 output_templates = {}
-input_pin_template_path = ""
-output_pin_template_path = ""
+input_pin_template_path = {}
+output_pin_template_path = {}
             
 def inputParams():
     parser = argparse.ArgumentParser()
@@ -76,24 +76,27 @@ def collectMetaDataFromJinja2File(template_file):
     #check if one of splited variables contain substring output_template
     res = [y for y in str_variables2 if 'output_template' in y]
     if (res):
-        split_res = str(res).split('__')
         output_templates[getOutputFileName(template_file)] = template_file
         
     #check if one of splited variables contain substring input_pin_template
     res = [y for y in str_variables2 if 'input_pin_template' in y]
     if (res):
-        if (input_pin_template_path != ""):
-            raise ValueError("input_pin_template assigned more than once!")
+        split_res = str(res).split('__')
+        split_res[1] = split_res[1][:-2]
+        if (input_pin_template_path.has_key(split_res[1])):
+            raise ValueError("input_pin_template for specified version assigned more than once!")
         else:
-            input_pin_template_path = template_file
+            input_pin_template_path[split_res[1]] = template_file
             
-    #check if one of splited variables contain substring input_pin_template
+    #check if one of splited variables contain substring output_pin_template
     res = [y for y in str_variables2 if 'output_pin_template' in y]
     if (res):
-        if (output_pin_template_path != ""):
-            raise ValueError("output_pin_template assigned more than once!")
+        split_res = str(res).split('__')
+        split_res[1] = split_res[1][:-2]
+        if (output_pin_template_path.has_key(split_res[1])):
+            raise ValueError("output_pin_template for specified version assigned more than once!")
         else:
-            output_pin_template_path = template_file
+            output_pin_template_path[split_res[1]] = template_file
                     
 def getOutputFileName(template_file):
     split_val = str(template_file).split("/")
@@ -199,8 +202,8 @@ def main():
     template_vars["device"] = data["device"]
     template_vars["package"] = data["package"]
     template_vars["board_description"] = data["board_description"]
-    template_vars["gpio_input_template"] = input_pin_template_path
-    template_vars["gpio_output_template"] = output_pin_template_path
+    template_vars["gpio_input_template"] = input_pin_template_path[data["gpio_driver_version"]]
+    template_vars["gpio_output_template"] = output_pin_template_path[data["gpio_driver_version"]]
     template_vars["gpio_version"] = data["gpio_driver_version"]
     template_vars["board_includes"] = include_board
     
