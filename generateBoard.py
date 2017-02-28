@@ -107,10 +107,10 @@ def isFileTypeHpp(file_name):
     return '.hpp' in file_name
 
 def replaceBoardStringInFileName(file_name, board):
-    aa = file_name
+    a = file_name
     replace = 'BOARD_NAME'
     withstring = board
-    newstr,found,endpart = aa.partition(replace)
+    newstr,found,endpart = a.partition(replace)
     
     if found:
         newstr+=withstring+endpart
@@ -190,36 +190,24 @@ def main():
     if not os.path.exists(include_directory):
         os.makedirs(include_directory)
    
-    template_vars = {}  
-    
-    collectLedsTemplateParams(template_vars, data)
-    collectButtonsTemplateParams(template_vars, data)
-    template_vars["used_pins_groups_buttons"] = collectPinGroupsTemplateParams(template_vars["buttons_pins"])
-    template_vars["used_pins_groups_leds"] = collectPinGroupsTemplateParams(template_vars["leds_pins"])
-
-    template_vars["board"] = data["board"]
-    template_vars["chip_family"] = data["chip_family"]
-    template_vars["device"] = data["device"]
-    template_vars["package"] = data["package"]
-    template_vars["board_description"] = data["board_description"]
-    template_vars["gpio_input_template"] = input_pin_template_path[data["gpio_driver_version"]]
-    template_vars["gpio_output_template"] = output_pin_template_path[data["gpio_driver_version"]]
-    template_vars["gpio_version"] = data["gpio_driver_version"]
+    template_vars = {}
     template_vars["board_includes"] = include_board
     
-    # optional values
-    if ("vdd_mv_configurable" in data):
-        template_vars["vdd_mv_configurable"] = data["vdd_mv_configurable"]
-    if ("vdd_mv" in data):
-        template_vars["vdd_mv"] = data["vdd_mv"]
-    if ("rcc_hse_clock_bybass_configurable" in data):    
-        template_vars["rcc_hse_clock_bybass_configurable"] = data["rcc_hse_clock_bybass_configurable"]
-    if ("rcc_hse_clock_bypass_default" in data):     
-        template_vars["rcc_hse_clock_bypass_default"] = data["rcc_hse_clock_bypass_default"]
-    if ("rcc_hse_frequency_configurable" in data):    
-        template_vars["rcc_hse_frequency_configurable"] = data["rcc_hse_frequency_configurable"]
-    if ("rcc_hse_frequency" in data): 
-        template_vars["rcc_hse_frequency"] = data["rcc_hse_frequency"]
+    for key in data:
+        if (data["leds"]):
+            collectLedsTemplateParams(template_vars, data)
+            template_vars["used_pins_groups_leds"] = collectPinGroupsTemplateParams(template_vars["leds_pins"])
+            
+        if (data["buttons"]):
+            collectButtonsTemplateParams(template_vars, data)
+            template_vars["used_pins_groups_buttons"] = collectPinGroupsTemplateParams(template_vars["buttons_pins"])
+        
+        if (data["gpio_driver_version"]):
+            template_vars["gpio_input_template"] = input_pin_template_path[data["gpio_driver_version"]]
+            template_vars["gpio_output_template"] = output_pin_template_path[data["gpio_driver_version"]]
+            template_vars["gpio_version"] = data["gpio_driver_version"]        
+    
+        template_vars[key] = data[key]
        
     filename = ""
     for key, value in output_templates.iteritems():
