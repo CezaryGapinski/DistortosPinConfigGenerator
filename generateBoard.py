@@ -76,9 +76,12 @@ def collectMetaDataFromJinja2File(template_file):
         matchObj = re.match( r'.+?(?=__)', value, re.M|re.I)
         if matchObj:
             output_templates[template_file]['id'] = str(matchObj.group())
-            matchObj2 = re.search( r'(?<=)v[0-9]', value, re.M|re.I)
-            if matchObj2:
-                output_templates[template_file]['version'] = str(matchObj2.group())
+            matchObj = re.search( r'(?<=__)[^}]*(?=__)', value, re.M|re.I)
+            if matchObj:
+                output_templates[template_file]['type'] = str(matchObj.group())
+            matchObj = re.search( r'(?<=__)v[0-9]', value, re.M|re.I)
+            if matchObj:
+                output_templates[template_file]['version'] = str(matchObj.group())
 
 def getTemplateFileFromTypeAndVersion(id, version):
     for file_name, parameters in output_templates.iteritems():
@@ -163,7 +166,14 @@ def collectPinGroupsTemplateParams(data):
         pins_type.add(pin_without_number[1:])
         
     return pins_type
- 
+
+def removeFromOutputTemplatesIfNotConfiguredParam(param, input_data):
+    if not param in input_data:
+        for template_path, parameters in output_templates.copy().iteritems():
+            if 'type' in parameters:
+                if parameters['type'] == param:
+                    del output_templates[template_path]
+
 def main():
     input_parameters = inputParams()
     
@@ -175,6 +185,7 @@ def main():
     with open(input_parameters.config_file) as data_file:
         data = json.load(data_file)
         
+    #TODO: remove existing directory
     output_board_path = input_parameters.output_dir_path
     output_board_path += data["board"] + "/"
     include_board = output_board_path + "include"
@@ -189,21 +200,19 @@ def main():
         if (key == "leds"):
             collectLedsTemplateParams(template_vars, data)
             template_vars["used_pins_groups_leds"] = collectPinGroupsTemplateParams(template_vars["leds_pins"])
-            
         elif (key == "buttons"):
             collectButtonsTemplateParams(template_vars, data)
             template_vars["used_pins_groups_buttons"] = collectPinGroupsTemplateParams(template_vars["buttons_pins"])
-        
         elif (key == "gpio_driver_version"):
             template_vars["gpio_input_template"] = getTemplateFileFromTypeAndVersion('input_pin_template', data["gpio_driver_version"])
             template_vars["gpio_output_template"] = getTemplateFileFromTypeAndVersion('output_pin_template', data["gpio_driver_version"])
             template_vars["gpio_version"] = data["gpio_driver_version"]
         else:
             template_vars[key] = data[key]
-    
-    #TODO: when template_path leds, buttons, gpio in out_templ template_path are not defined then remove from out_templ this file
-    #because we don't need this file except generate empty when someoune not define it in json file
-    filename = ""
+            
+    removeFromOutputTemplatesIfNotConfiguredParam('leds', data)
+    removeFromOutputTemplatesIfNotConfiguredParam('buttons', data)
+
     for template_path, parameters in output_templates.iteritems():
         if parameters['id'] == 'output_template':
             filename = replaceBoardStringInFileName(getOutputFileName(template_path), template_vars["board"])
