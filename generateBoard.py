@@ -15,10 +15,9 @@ from jinja2 import meta
 import argparse
 from string import digits
 import os
+import re
 
 output_templates = {}
-input_pin_template_path = {}
-output_pin_template_path = {}
             
 def inputParams():
     parser = argparse.ArgumentParser()
@@ -63,8 +62,7 @@ def searchForJinja2FilesInPath(paths):
     return search_paths
 
 def collectMetaDataFromJinja2File(template_file):
-    global input_pin_template_path
-    global output_pin_template_path
+    global output_templates
     templateLoader = jinja2.FileSystemLoader([".", os.path.dirname(template_file)])
     templateEnv = jinja2.Environment( loader=templateLoader )
     
@@ -73,31 +71,25 @@ def collectMetaDataFromJinja2File(template_file):
     variables = meta.find_undeclared_variables(parsed_source)
     str_variables2 = str(variables).split('\'')
     
-    #check if one of splited variables contain substring output_template
-    res = [y for y in str_variables2 if 'output_template' in y]
-    if (res):
-        output_templates[getOutputFileName(template_file)] = template_file
-        
-    #check if one of splited variables contain substring input_pin_template
-    res = [y for y in str_variables2 if 'input_pin_template' in y]
-    if (res):
-        split_res = str(res).split('__')
-        split_res[1] = split_res[1][:-2]
-        if (input_pin_template_path.has_key(split_res[1])):
-            raise ValueError("input_pin_template for specified version assigned more than once!")
-        else:
-            input_pin_template_path[split_res[1]] = template_file
-            
-    #check if one of splited variables contain substring output_pin_template
-    res = [y for y in str_variables2 if 'output_pin_template' in y]
-    if (res):
-        split_res = str(res).split('__')
-        split_res[1] = split_res[1][:-2]
-        if (output_pin_template_path.has_key(split_res[1])):
-            raise ValueError("output_pin_template for specified version assigned more than once!")
-        else:
-            output_pin_template_path[split_res[1]] = template_file
-                    
+    output_templates[template_file] = {}
+    for value in str_variables2:
+        matchObj = re.match( r'.+?(?=__)', value, re.M|re.I)
+        if matchObj:
+            output_templates[template_file]['id'] = str(matchObj.group())
+            matchObj2 = re.search( r'(?<=)v[0-9]', value, re.M|re.I)
+            if matchObj2:
+                output_templates[template_file]['version'] = str(matchObj2.group())
+
+def getTemplateFileFromTypeAndVersion(id, version):
+    for file_name, parameters in output_templates.iteritems():
+        if parameters['id'] == id:
+            if (version):
+                if (parameters['version'] == version):
+                    return file_name
+            else:
+                return file_name
+    return Null
+
 def getOutputFileName(template_file):
     split_val = str(template_file).split("/")
     file_name = split_val[-1].partition(".jinja")
@@ -180,7 +172,7 @@ def main():
     for file in jinja_files:
         collectMetaDataFromJinja2File(file)
 
-    with open(input_parameters.config_file) as data_file:    
+    with open(input_parameters.config_file) as data_file:
         data = json.load(data_file)
         
     output_board_path = input_parameters.output_dir_path
@@ -194,28 +186,31 @@ def main():
     template_vars["board_includes"] = include_board
     
     for key in data:
-        if (data["leds"]):
+        if (key == "leds"):
             collectLedsTemplateParams(template_vars, data)
             template_vars["used_pins_groups_leds"] = collectPinGroupsTemplateParams(template_vars["leds_pins"])
             
-        if (data["buttons"]):
+        elif (key == "buttons"):
             collectButtonsTemplateParams(template_vars, data)
             template_vars["used_pins_groups_buttons"] = collectPinGroupsTemplateParams(template_vars["buttons_pins"])
         
-        if (data["gpio_driver_version"]):
-            template_vars["gpio_input_template"] = input_pin_template_path[data["gpio_driver_version"]]
-            template_vars["gpio_output_template"] = output_pin_template_path[data["gpio_driver_version"]]
-            template_vars["gpio_version"] = data["gpio_driver_version"]        
-    
-        template_vars[key] = data[key]
-       
-    filename = ""
-    for key, value in output_templates.iteritems():
-        key = replaceBoardStringInFileName(key, template_vars["board"])
-        if(isFileTypeHpp(key)):
-            filename = include_directory + "/" + key
+        elif (key == "gpio_driver_version"):
+            template_vars["gpio_input_template"] = getTemplateFileFromTypeAndVersion('input_pin_template', data["gpio_driver_version"])
+            template_vars["gpio_output_template"] = getTemplateFileFromTypeAndVersion('output_pin_template', data["gpio_driver_version"])
+            template_vars["gpio_version"] = data["gpio_driver_version"]
         else:
-            filename = output_board_path + key
-        generateJinja2File(filename, value, template_vars)
+            template_vars[key] = data[key]
+    
+    #TODO: when template_path leds, buttons, gpio in out_templ template_path are not defined then remove from out_templ this file
+    #because we don't need this file except generate empty when someoune not define it in json file
+    filename = ""
+    for template_path, parameters in output_templates.iteritems():
+        if parameters['id'] == 'output_template':
+            filename = replaceBoardStringInFileName(getOutputFileName(template_path), template_vars["board"])
+            if(isFileTypeHpp(filename)):
+                filename = include_directory + "/" + filename
+            else:
+                filename = output_board_path + filename
+            generateJinja2File(filename, template_path, template_vars)
 
 if __name__ == '__main__': main()
