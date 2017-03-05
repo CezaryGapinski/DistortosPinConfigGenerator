@@ -1,0 +1,2 @@
+{{- input_pin_template__v1 -}}
+chip::ChipInputPin{ chip::Pin::{{item["pin"]}}, chip::PinPull::{{item["pinPull"]}}, {% filter lower %}{{item["inverted"]}}{% endfilter %} }, 
