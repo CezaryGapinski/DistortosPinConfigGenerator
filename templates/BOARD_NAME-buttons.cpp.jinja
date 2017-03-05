@@ -1,5 +1,5 @@
 {{- output_template__buttons__ -}}
-{%- set file_type_in_header = 'BUTTON' -%}
+{%- set file_type_in_header = 'button' -%}
 {% include "header_cpp_file.jinja" %}
 
 #include "distortos/board/buttons.hpp"
@@ -20,10 +20,11 @@ namespace board
 
 const chip::ChipInputPin buttons[totalButtons]
 {
-{% for item in buttons_pins %} 
-	/// configuration for button {% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}
-	{% include gpio_input_template %}
-{% endfor %}
+{% for item in buttons_pins -%}
+#if DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE == 1
+		{% include gpio_input_template %}
+#endif	// DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE == 1
+{%- endfor %}
 };
 
 }	// namespace board
