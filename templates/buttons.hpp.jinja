@@ -8,19 +8,17 @@
 #include "distortos/distortosConfiguration.h"
 
 #include <cstddef>
-
-{% for id, group in buttons_ids -%}
+{% for id, group in buttons_ids %}
 /// indicates whether {% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %} button is enabled (1) or not (0)
 #ifdef CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
 #define DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE	1
 #else	// !def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
 #define DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE	0
 #endif	// !def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
-{%- endfor %}
-
+{% endfor %}
 /// total number of buttons on the board
-{% for id, group in buttons_ids -%}
 #define DISTORTOS_BOARD_TOTAL_BUTTONS	\
+{%- for id, group in buttons_ids %}
 	DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE	+	\
 {%- endfor %}
 	0
