@@ -4,21 +4,33 @@
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
  *
  * \file
- * \brief Declaration of BUTTONs for 32F429IDISCOVERY
+ * \brief Declaration of buttons for 32F429IDISCOVERY
  *
- * \author Copyright (C) 2016 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
+ * \author Copyright (C) 2016-2017 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
+ *
  * \par License
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
  * distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
  */
 
 #ifndef SOURCE_BOARD_STM32_STM32F4_32F429IDISCOVERY_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
 #define SOURCE_BOARD_STM32_STM32F4_32F429IDISCOVERY_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
 
-#include "distortos/chip/STM32-GPIOv2.hpp"
+#include "distortos/distortosConfiguration.h"
 
-#include <array>
+#include <cstddef>
+
+/// indicates whether B1 button is enabled (1) or not (0)
+#ifdef CONFIG_CHIP_STM32_GPIOV2_GPIOA_ENABLE
+#define DISTORTOS_BOARD_B1_BUTTON_ENABLE	1
+#else	// !def CONFIG_CHIP_STM32_GPIOV2_GPIOA_ENABLE
+#define DISTORTOS_BOARD_B1_BUTTON_ENABLE	0
+#endif	// !def CONFIG_CHIP_STM32_GPIOV2_GPIOA_ENABLE
+
+/// total number of buttons on the board
+#define DISTORTOS_BOARD_TOTAL_BUTTONS	\
+	DISTORTOS_BOARD_B1_BUTTON_ENABLE	+	\
+	0
 
 namespace distortos
 {
@@ -37,20 +49,20 @@ class ChipInputPin;
 namespace board
 {
 
+/// total number of buttons on the board
+constexpr size_t totalButtons {DISTORTOS_BOARD_TOTAL_BUTTONS};
+
 /*---------------------------------------------------------------------------------------------------------------------+
 | button indexes
 +---------------------------------------------------------------------------------------------------------------------*/
-enum Buttons {
 
-#if defined(CONFIG_CHIP_STM32_GPIOV2_GPIOA_ENABLE)
-/// index of  button
-	b1ButtonIndex,
-#endif // def CONFIG_CHIP_STM32_GPIOV2_GPIOA_ENABLE
-    blLastInSeq // last value
+enum
+{
+#if DISTORTOS_BOARD_B1_BUTTON_ENABLE == 1
+		/// index of B1 button
+		b1ButtonIndex,
+#endif	// DISTORTOS_BOARD_B1_BUTTON_ENABLE == 1
 };
-
-/// total number of buttons on the board
-constexpr size_t totalButtons {blLastInSeq};
 
 #ifdef CONFIG_BOARD_BUTTONS_ENABLE
 
