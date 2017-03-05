@@ -155,12 +155,11 @@ def collectPinGroupsTemplateParams(data):
 
 	return pinsType
 
-def removeFromOutputTemplatesIfNotConfiguredParam(param, input_data):
-	if not param in input_data:
-		for template_path, parameters in outputTemplates.copy().iteritems():
-			if 'type' in parameters:
-				if parameters['type'] == param:
-					del outputTemplates[template_path]
+def removeFromOutputTemplatesIfNotConfiguredParam(input_data):
+	for template_path, parameters in outputTemplates.copy().iteritems():
+		if 'type' in parameters:
+			if not parameters['type'] in input_data:
+				del outputTemplates[template_path]
 
 def main():
 	inputParameters = inputParams()
@@ -200,8 +199,7 @@ def main():
 		else:
 			templateVars[key] = data[key]
 	
-	removeFromOutputTemplatesIfNotConfiguredParam('leds', data)
-	removeFromOutputTemplatesIfNotConfiguredParam('buttons', data)
+	removeFromOutputTemplatesIfNotConfiguredParam(data)
 
 	for template_path, parameters in outputTemplates.iteritems():
 		if parameters['id'] == 'output_template':
