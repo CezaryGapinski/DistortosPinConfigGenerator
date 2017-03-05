@@ -29,23 +29,13 @@ namespace board
 +---------------------------------------------------------------------------------------------------------------------*/
 
 chip::ChipOutputPin leds[totalLeds]
-{  
-	/// configuration for led LD3
-	chip::ChipOutputPin{ chip::Pin::pg13,
-	false,
-	chip::PinOutputSpeed::low,
-	chip::PinPull::none,
-	false,
-	false },
- 
-	/// configuration for led LD4
-	chip::ChipOutputPin{ chip::Pin::pg14,
-	false,
-	chip::PinOutputSpeed::low,
-	chip::PinPull::none,
-	false,
-	false },
- 
+{
+#if DISTORTOS_BOARD_LD3_LED_ENABLE == 1
+		chip::ChipOutputPin{chip::Pin::pg13, false, chip::PinOutputSpeed::low, chip::PinPull::none, false, false},
+#endif	// DISTORTOS_BOARD_LD3_LED_ENABLE == 1
+#if DISTORTOS_BOARD_LD4_LED_ENABLE == 1
+		chip::ChipOutputPin{chip::Pin::pg14, false, chip::PinOutputSpeed::low, chip::PinPull::none, false, false},
+#endif	// DISTORTOS_BOARD_LD4_LED_ENABLE == 1
 };
 
 }	// namespace board
