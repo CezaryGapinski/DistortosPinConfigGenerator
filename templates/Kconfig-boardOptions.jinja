@@ -3,7 +3,6 @@
 {% include "header_config_file.jinja" %}
 
 if BOARD_{{ board }}
-
 {% if rcc_hse_clock_bybass_configurable is defined %}
 config CHIP_{{ chip_family }}_VDD_MV_CONFIGURABLE
 	bool
