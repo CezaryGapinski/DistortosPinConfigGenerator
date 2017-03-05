@@ -1,8 +1,15 @@
-{{- output_template__Rules_mk -}}
-{%- set file_type_in_header = 'Rules.mk' -%}
-{% include "header_config_file.jinja" %}
+# File generated with scripts/generateBoard.py:
+# Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
+#
+# file: Rules.mk
+#
+# author: Copyright (C) 2015-2017 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
+#
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+# distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
 
-ifeq ($(CONFIG_BOARD_{{ board|replace('-', '_') }}),y)
+ifeq ($(CONFIG_BOARD_NUCLEO_F103RB),y)
 
 #-----------------------------------------------------------------------------------------------------------------------
 # compilation flags
@@ -18,5 +25,4 @@ CXXFLAGS_$(d) := $(CXXFLAGS_$(d)) $(BOARD_INCLUDES)
 
 include $(DISTORTOS_PATH)footer.mk
 
-endif	# eq ($(CONFIG_BOARD_{{ board|replace('-', '_') }}),y)
-{{''}}
+endif	# eq ($(CONFIG_BOARD_NUCLEO_F103RB),y)

@@ -2,7 +2,7 @@
 {%- set file_type_in_header = 'Kconfig-boardChoices' -%}
 {% include "header_config_file.jinja" %}
 
-config BOARD_{{ board }}
+config BOARD_{{ board|replace('-', '_') }}
 	bool "{{ board }}"
 	depends on CHIP_{{ chip_family }}
 	select CHIP_{{ device }}

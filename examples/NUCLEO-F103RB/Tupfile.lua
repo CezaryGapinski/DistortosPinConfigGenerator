@@ -1,4 +1,3 @@
-{{- output_template__Tupfile_lua -}}
 -- File generated with scripts/generateBoard.py:
 -- Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
 --
@@ -10,7 +9,7 @@
 -- distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 --
 
-if CONFIG_BOARD_{{ board|replace('-', '_') }} == "y" then
+if CONFIG_BOARD_NUCLEO_F103RB == "y" then
 
 	CXXFLAGS += STANDARD_INCLUDES
 	CXXFLAGS += CHIP_INCLUDES
@@ -18,5 +17,4 @@ if CONFIG_BOARD_{{ board|replace('-', '_') }} == "y" then
 
 	tup.include(DISTORTOS_TOP .. "compile.lua")
 
-end	-- if CONFIG_BOARD_{{ board|replace('-', '_') }} == "y" then
-{{''}}
+end	-- if CONFIG_BOARD_NUCLEO_F103RB == "y" then

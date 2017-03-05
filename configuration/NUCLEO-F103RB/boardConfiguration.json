@@ -1,0 +1,20 @@
+{
+ "board":"NUCLEO-F103RB",
+ "board_description": "NUCLEO-F103RB board with STM32F103RB chip in LQFP64 package",
+ "chip_family":"STM32F1",
+ "device":"STM32F103RB",
+ "gpio_driver_version":"v1",
+ "output_pins":[
+	 {"id":"pin_ld2","pin":"pa5","openDrain":false,"pinOutputSpeed":"_2Mhz","initialState":false,"inverted":false}
+        ],
+ "input_pins":[
+	 {"id":"pin_b1","pin":"pc13","pinPull":"none","inverted":true}
+        ],
+ "leds":[
+	 {"id":"ld2","alternative_id":"green","output_pins":"pin_ld2"}
+        ],
+ "buttons":[
+	 {"id":"b1","input_pins":"pin_b1"}
+	]
+}
+

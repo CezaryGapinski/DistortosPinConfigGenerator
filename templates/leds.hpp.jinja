@@ -2,8 +2,8 @@
 {%- set file_type_in_header = 'LED' -%}
 {% include "header_hpp_file.jinja" %}
 
-#ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
-#define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+#ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+#define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
 
 #include "distortos/distortosConfiguration.h"
 
@@ -81,5 +81,5 @@ extern chip::ChipOutputPin leds[totalLeds];
 
 }	// namespace distortos
 
-#endif	// SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
+#endif	// SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_LEDS_HPP_
 {{''}}

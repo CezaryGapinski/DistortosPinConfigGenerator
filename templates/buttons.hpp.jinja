@@ -2,8 +2,8 @@
 {%- set file_type_in_header = 'button' -%}
 {% include "header_hpp_file.jinja" %}
 
-#ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
-#define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
+#ifndef SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
+#define SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
 
 #include "distortos/distortosConfiguration.h"
 
@@ -72,5 +72,5 @@ extern const chip::ChipInputPin buttons[totalButtons];
 
 }	// namespace distortos
 
-#endif	// SOURCE_BOARD_STM32_{{ chip_family }}_{{ board }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
+#endif	// SOURCE_BOARD_STM32_{{ chip_family }}_{{ board|replace('-', '_') }}_INCLUDE_DISTORTOS_BOARD_BUTTONS_HPP_
 {{''}}
