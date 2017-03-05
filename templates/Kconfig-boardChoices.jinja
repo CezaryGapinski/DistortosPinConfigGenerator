@@ -6,8 +6,22 @@ config BOARD_{{ board }}
 	bool "{{ board }}"
 	depends on CHIP_{{ chip_family }}
 	select CHIP_{{ device }}
-	select CHIP_{{ package}}
+{%- for id in used_pins_groups_leds %}
+	{%- if loop.index == 1 %}
+	select BOARD_HAS_LEDS if CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+	{% else -%}
+	CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+	{% endif -%}
+{% endfor -%}
+	0
+{%- for id in used_pins_groups_buttons %}
+	{%- if loop.index == 1 %}
+	select BOARD_HAS_BUTTONS if CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+	{% else -%}
+	CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+	{% endif -%}
+{% endfor -%}
+	0
 	help
-
 		{{ board_description }}
 {{''}}
