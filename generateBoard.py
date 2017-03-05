@@ -16,6 +16,7 @@ import argparse
 from string import digits
 import os
 import re
+import shutil
 
 outputTemplates = {}
 
@@ -170,16 +171,19 @@ def main():
 
 	with open(inputParameters.config_file) as data_file:
 		data = json.load(data_file)
-	
-	#TODO: remove existing directory
+
 	outputBoardPath = inputParameters.output_dir_path
-	outputBoardPath += data["board"] + "/"
+	outputBoardPath += data["board"]
+	#Remove existing directory
+	shutil.rmtree(outputBoardPath, ignore_errors=True)
+
+	outputBoardPath += "/"
 	includeBoard = outputBoardPath + "include"
 	includeDirectory = outputBoardPath + "include/distortos/board"
-	
+
 	if not os.path.exists(includeDirectory):
 		os.makedirs(includeDirectory)
-	
+
 	templateVars = {}
 	templateVars["board_includes"] = includeBoard
 
