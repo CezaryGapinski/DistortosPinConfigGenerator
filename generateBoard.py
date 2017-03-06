@@ -26,7 +26,8 @@ def inputParams():
 			help='path to json config file')
 	parser.add_argument('-o', '--output', required=True, action='store', dest='output_dir_path',
 			help='path to directory where files will be generated')
-	parser.add_argument('-s', '--search_path', required=True, action='store', nargs='*', dest='search_path',
+	parser.add_argument('-s', '--search_path', required=False, action='store', nargs='*',
+			default='.', dest='search_path',
 			help='string separated with spaces containt paths where templates are located')
 	return parser.parse_args()
 
