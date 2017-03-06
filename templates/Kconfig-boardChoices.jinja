@@ -2,14 +2,11 @@
 {%- set file_type_in_header = 'Kconfig-boardChoices' -%}
 {% include "header_config_file.jinja" %}
 
-config BOARD_{{ board|replace('-', '_') }}
-	bool "{{ board }}"
-	depends on CHIP_{{ chip_family }}
-	select CHIP_{{ device }}
-{% for id in used_pins_groups_leds -%}
+{% macro createHasCondition(type, groups) -%}
+{% for id in groups -%}
 	{% set gpio_en_str = ['CHIP_STM32_GPIO', gpio_version, '_GPIO', id, '_ENABLE'] -%}
 	{% if loop.first -%}
-		{% set str = '	select BOARD_HAS_LEDS if ' + gpio_en_str|join|upper -%}
+		{% set str = '	select BOARD_HAS_' + type + 'if ' + gpio_en_str|join|upper -%}
 		{% if not loop.last -%}
 			{% set str = str + ' ||	\\' -%}
 		{% endif -%}
@@ -21,21 +18,14 @@ config BOARD_{{ board|replace('-', '_') }}
 	{% endif -%}
 	{{ str }}
 {% endfor -%}
-{% for id in used_pins_groups_buttons -%}
-	{% set gpio_en_str = ['CHIP_STM32_GPIO', gpio_version, '_GPIO', id, '_ENABLE'] -%}
-	{% if loop.first -%}
-		{% set str = '	select BOARD_HAS_BUTTONS if ' + gpio_en_str|join|upper -%}
-		{% if not loop.last -%}
-			{% set str = str + ' ||	\\' -%}
-		{% endif -%}
-	{% else -%}
-		{% set str = '		' + gpio_en_str|join|upper -%}
-		{% if not loop.last -%}
-			{% set str = str + '||	\\' -%}
-		{% endif -%}
-	{% endif -%}
-	{{ str }}
-{% endfor %}
+{% endmacro -%}
+
+config BOARD_{{ board|replace('-', '_') }}
+	bool "{{ board }}"
+	depends on CHIP_{{ chip_family }}
+	select CHIP_{{ device }}
+{{ createHasCondition('LEDS ', used_pins_groups_leds) -}}
+{{ createHasCondition('BUTTONS ', used_pins_groups_buttons) }}
 	help
 		{{ board_description }}
 {{''}}
