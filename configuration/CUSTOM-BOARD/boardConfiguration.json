@@ -1,0 +1,24 @@
+{
+ "board":"CUSTOM-BOARD",
+ "board_description": "CUSTOM-BOARD board with STM32F103RB chip in LQFP64 package",
+ "chip_family":"STM32F1",
+ "device":"STM32F103RB",
+ "gpio_driver_version":"v1",
+ "output_pins":[
+	 {"id":"pin_ld2","pin":"pa5","openDrain":false,"pinOutputSpeed":"_2Mhz","initialState":false,"inverted":false},
+	 {"id":"pin_ld3","pin":"pg5","openDrain":false,"pinOutputSpeed":"_2Mhz","initialState":false,"inverted":false}
+        ],
+ "input_pins":[
+	 {"id":"pin_b1","pin":"pc13","pinPull":"none","inverted":true},
+	 {"id":"pin_b2","pin":"pb13","pinPull":"none","inverted":true}
+        ],
+ "leds":[
+	 {"id":"ld2","alternative_id":"green","output_pins":"pin_ld2"},
+	 {"id":"ld3","alternative_id":"red","output_pins":"pin_ld3"}
+        ],
+ "buttons":[
+	 {"id":"b1","input_pins":"pin_b1"},
+	 {"id":"b2","input_pins":"pin_b2"}
+	]
+}
+
