@@ -6,22 +6,36 @@ config BOARD_{{ board|replace('-', '_') }}
 	bool "{{ board }}"
 	depends on CHIP_{{ chip_family }}
 	select CHIP_{{ device }}
-{%- for id in used_pins_groups_leds %}
-	{%- if loop.index == 1 %}
-	select BOARD_HAS_LEDS if CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+{% for id in used_pins_groups_leds -%}
+	{% set gpio_en_str = ['CHIP_STM32_GPIO', gpio_version, '_GPIO', id, '_ENABLE'] -%}
+	{% if loop.first -%}
+		{% set str = '	select BOARD_HAS_LEDS if ' + gpio_en_str|join|upper -%}
+		{% if not loop.last -%}
+			{% set str = str + ' ||	\\' -%}
+		{% endif -%}
 	{% else -%}
-	CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+		{% set str = '		' + gpio_en_str|join|upper -%}
+		{% if not loop.last -%}
+			{% set str = str + '||	\\' -%}
+		{% endif -%}
 	{% endif -%}
+	{{ str }}
 {% endfor -%}
-	0
-{%- for id in used_pins_groups_buttons %}
-	{%- if loop.index == 1 %}
-	select BOARD_HAS_BUTTONS if CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+{% for id in used_pins_groups_buttons -%}
+	{% set gpio_en_str = ['CHIP_STM32_GPIO', gpio_version, '_GPIO', id, '_ENABLE'] -%}
+	{% if loop.first -%}
+		{% set str = '	select BOARD_HAS_BUTTONS if ' + gpio_en_str|join|upper -%}
+		{% if not loop.last -%}
+			{% set str = str + ' ||	\\' -%}
+		{% endif -%}
 	{% else -%}
-	CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ id }}{% endfilter %}_ENABLE ||	\
+		{% set str = '		' + gpio_en_str|join|upper -%}
+		{% if not loop.last -%}
+			{% set str = str + '||	\\' -%}
+		{% endif -%}
 	{% endif -%}
-{% endfor -%}
-	0
+	{{ str }}
+{% endfor %}
 	help
 		{{ board_description }}
 {{''}}

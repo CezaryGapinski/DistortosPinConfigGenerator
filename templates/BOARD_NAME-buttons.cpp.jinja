@@ -24,7 +24,7 @@ const chip::ChipInputPin buttons[totalButtons]
 #if DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE == 1
 		{% include gpio_input_template %}
 #endif	// DISTORTOS_BOARD_{% filter upper %}{{buttons_ids[loop.index - 1][0]}}{% endfilter %}_BUTTON_ENABLE == 1
-{%- endfor %}
+{% endfor -%}
 };
 
 }	// namespace board

@@ -24,7 +24,7 @@ chip::ChipOutputPin leds[totalLeds]
 #if DISTORTOS_BOARD_{% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}_LED_ENABLE == 1
 		{% include gpio_output_template %}
 #endif	// DISTORTOS_BOARD_{% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}_LED_ENABLE == 1
-{% endfor -%} 
+{% endfor -%}
 };
 
 }	// namespace board
