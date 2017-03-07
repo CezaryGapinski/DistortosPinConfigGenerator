@@ -1,0 +1,26 @@
+{
+ "board":"NUCLEO-F429ZI",
+ "board_description": "NUCLEO-F429ZI board with STM32F429ZI chip in LQFP144 package\n\n\t\tChip's supply voltage is 3.3V.",
+ "chip_family":"STM32F4",
+ "vdd_mv_configurable":false,
+ "vdd_mv":3300,
+ "device":"STM32F429ZI",
+ "gpio_driver_version":"v2",
+ "output_pins":[
+	 {"id":"pin_ld1","pin":"pb0","openDrain":false,"pinOutputSpeed":"low","pinPull":"none","initialState":false,"inverted":false},
+	 {"id":"pin_ld2","pin":"pb7","openDrain":false,"pinOutputSpeed":"low","pinPull":"none","initialState":false,"inverted":false},
+	 {"id":"pin_ld3","pin":"pb14","openDrain":false,"pinOutputSpeed":"low","pinPull":"none","initialState":false,"inverted":false}
+        ],
+ "input_pins":[
+	 {"id":"pin_b1","pin":"pc13","pinPull":"none","inverted":false}
+        ],
+ "leds":[
+	 {"id":"ld1","alternative_id":"green","output_pins":"pin_ld1"},
+	 {"id":"ld2","alternative_id":"blue","output_pins":"pin_ld2"},
+	 {"id":"ld3","alternative_id":"red","output_pins":"pin_ld3"}
+        ],
+ "buttons":[
+	 {"id":"b1","input_pins":"pin_b1"}
+	]
+}
+
