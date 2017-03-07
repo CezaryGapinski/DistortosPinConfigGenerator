@@ -18,11 +18,11 @@
 #endif	// !def CONFIG_CHIP_STM32_GPIO{% filter upper %}{{ gpio_version }}{% endfilter %}_GPIO{% filter upper %}{{ group }}{% endfilter %}_ENABLE
 {% endfor %}
 /// total number of leds on the board
-#define DISTORTOS_BOARD_TOTAL_LEDS	\
+#define DISTORTOS_BOARD_TOTAL_LEDS		( \
 {%- for id, alternative_id, group in leds_ids %}
-	DISTORTOS_BOARD_{% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}_LED_ENABLE	+	\
+		DISTORTOS_BOARD_{% filter upper %}{{leds_ids[loop.index - 1][0]}}{% endfilter %}_LED_ENABLE + \
 {%- endfor %}
-	0
+		0)
 
 namespace distortos
 {

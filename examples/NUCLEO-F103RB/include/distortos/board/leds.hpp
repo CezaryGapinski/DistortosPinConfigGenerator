@@ -27,9 +27,9 @@
 #endif	// !def CONFIG_CHIP_STM32_GPIOV1_GPIOA_ENABLE
 
 /// total number of leds on the board
-#define DISTORTOS_BOARD_TOTAL_LEDS	\
-	DISTORTOS_BOARD_LD2_LED_ENABLE	+	\
-	0
+#define DISTORTOS_BOARD_TOTAL_LEDS		( \
+		DISTORTOS_BOARD_LD2_LED_ENABLE + \
+		0)
 
 namespace distortos
 {

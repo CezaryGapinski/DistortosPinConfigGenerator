@@ -27,9 +27,9 @@
 #endif	// !def CONFIG_CHIP_STM32_GPIOV1_GPIOC_ENABLE
 
 /// total number of buttons on the board
-#define DISTORTOS_BOARD_TOTAL_BUTTONS	\
-	DISTORTOS_BOARD_B1_BUTTON_ENABLE	+	\
-	0
+#define DISTORTOS_BOARD_TOTAL_BUTTONS		( \
+		DISTORTOS_BOARD_B1_BUTTON_ENABLE + \
+		0)
 
 namespace distortos
 {

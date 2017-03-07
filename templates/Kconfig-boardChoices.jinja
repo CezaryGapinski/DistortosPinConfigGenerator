@@ -1,6 +1,6 @@
 {{- output_template__Kconfig_boardChoices -}}
 {%- set file_type_in_header = 'Kconfig-boardChoices' -%}
-{%- set begin_year = 2015 -%}
+{%- set begin_year = 2016 -%}
 {% include "header_config_file.jinja" %}
 
 {% macro createHasCondition(type, groups) -%}
@@ -26,7 +26,7 @@ config BOARD_{{ board|replace('-', '_') }}
 	depends on CHIP_{{ chip_family }}
 	select CHIP_{{ device }}
 {{ createHasCondition('LEDS ', used_pins_groups_leds) -}}
-{{ createHasCondition('BUTTONS ', used_pins_groups_buttons) }}
-	help
+{{ createHasCondition('BUTTONS ', used_pins_groups_buttons) -}}
+{{''}}	help
 		{{ board_description }}
 {{''}}
