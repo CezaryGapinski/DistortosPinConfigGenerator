@@ -1,4 +1,5 @@
 {{- header_file__cpp_file -}}
+{%- from 'create_date.jinja' import createDate -%}
 /**
  * File generated with scripts/generateBoard.py:
  * Copyright (C) 2017 Cezary Gapinski cezary.gapinski@gmail.com
@@ -6,7 +7,7 @@
  * \file
  * \brief Definition of {{file_type_in_header}}s for {{ board }}
  *
- * \author Copyright (C) 2016-2017 Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
+ * \author Copyright (C) {{ createDate(begin_year, actual_year) }} Kamil Szczygiel http://www.distortec.com http://www.freddiechopin.info
  *
  * \par License
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not

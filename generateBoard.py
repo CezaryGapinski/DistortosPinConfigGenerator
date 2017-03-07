@@ -17,6 +17,7 @@ from string import digits
 import os
 import re
 import shutil
+import datetime
 
 outputTemplates = {}
 
@@ -187,6 +188,7 @@ def main():
 
 	templateVars = {}
 	templateVars["board_includes"] = includeBoard
+	templateVars["actual_year"] = datetime.datetime.now().year
 
 	for key in data:
 		if (key == "leds"):

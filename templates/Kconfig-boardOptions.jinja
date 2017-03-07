@@ -1,5 +1,6 @@
 {{- output_template__Kconfig_boardOptions -}}
 {%- set file_type_in_header = 'Kconfig-boardOptions' -%}
+{%- set begin_year = 2015 -%}
 {% include "header_config_file.jinja" %}
 
 if BOARD_{{ board|replace('-', '_') }}
